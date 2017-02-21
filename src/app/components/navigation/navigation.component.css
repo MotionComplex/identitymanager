@@ -1,0 +1,18 @@
+.navbar a {
+    color: rgba(0, 0, 0, 0.8);
+}
+
+.auth-btn {
+    background-color: transparent;
+    background-repeat: no-repeat;
+    height: 24px;
+    width: 24px;
+}
+
+.btn-login {
+    background-image: url("assets/img/login.png");
+}
+
+.btn-logout {
+    background-image: url("assets/img/logout.png");
+}

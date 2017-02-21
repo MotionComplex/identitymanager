@@ -1,0 +1,21 @@
+.main-container {
+    min-height: 100%;
+    width: auto;
+    margin-left: 0;
+    margin-right: 0;
+    background-color: #fff;
+}
+footer {
+    position: relative;
+    width: 100%;
+    min-height: 160px;
+    clear: both;
+    margin-top: -160px;
+    padding-top: 0;
+    background-color: rgba(0,0,0, 0.8);
+    background-image: url("../../assets/img/fingerprint-bg-white.svg");
+    background-repeat: no-repeat;
+    background-size: 80px;
+    background-position-x: 50%;
+    background-position-y: 85%;
+}

@@ -1,1 +1,16 @@
-/* You can add global styles to this file, and also import other style files */
+* {
+    margin:0;
+    padding:0;
+}
+
+html, body {
+    height: 100%;
+}
+.main-content{
+    position: relative;
+    min-height: 550px;
+    padding-bottom: 160px;
+}
+.main-content h1{
+    padding-top: 20px;
+}
