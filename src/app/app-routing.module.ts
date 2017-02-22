@@ -3,7 +3,9 @@ import { RouterModule, Routes }  from '@angular/router';
 
 import { HomeComponent } from './components/home/home.component';
 import { UsersComponent } from './components/users/users.component';
-import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { PageNotFoundComponent } from './components/error-pages/page-not-found/page-not-found.component';
+import { UnauthorizedComponent } from './components/error-pages/unauthorized/unauthorized.component';
+import { AuthGuardService } from './services/auth-guard/auth-guard.service';
 
 export const appRoutes: Routes = [
   {
@@ -20,9 +22,20 @@ export const appRoutes: Routes = [
     data: {
       title: 'Benutzer',
       relevantForNav: true
+    },
+    canActivate: [
+      AuthGuardService
+    ]
+  },
+  {
+    path: 'unauthorized',
+    component: UnauthorizedComponent,
+    data: {
+      title: 'Unauthorized',
+      relevantForNav: false
     }
   },
-  { 
+  {
     path: '**', 
     component: PageNotFoundComponent,
     data: {

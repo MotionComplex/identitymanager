@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-
 import { appRoutes } from './../../app-routing.module';
+import { OAuthService } from 'angular2-oauth2/oauth-service';
 
 @Component({
   selector: 'app-navigation',
@@ -11,7 +11,7 @@ export class NavigationComponent implements OnInit {
   private pageTitle: string;
   private routes = appRoutes.filter(r => r.data['relevantForNav']);
 
-  constructor() {
+  constructor(private oauthService: OAuthService) {
     this.pageTitle = 'IdentityManager';
   }
 
@@ -20,15 +20,16 @@ export class NavigationComponent implements OnInit {
 
   private login() {
     console.log('trying to log in');
+    this.oauthService.initImplicitFlow();
   }
 
   private logout() {
     console.log('trying to log out');
+    this.oauthService.logOut();
   }
 
-  // TODO: Return state from service
   private isLoggedIn(): boolean {
     console.log('checking if is logged in');
-    return false;
+    return this.oauthService.hasValidIdToken() && this.oauthService.hasValidAccessToken();
   }
 }

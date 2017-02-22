@@ -6,9 +6,13 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      <li *ngFor="let route of routes"><a routerLink="{{route.path}}">{{route.data['title']}}</a></li>
+      <li *ngFor="let route of routes">
+        <a *ngIf="!isLoggedIn()" class="nav-link disabled" routerLink="">{{route.data['title']}}</a>
+        <a *ngIf="isLoggedIn()" class="nav-link" routerLink="{{route.path}}">{{route.data['title']}}</a>
+      </li>
     </ul>
-    <span *ngIf="!isLoggedIn()"><span (click)="login()">login</span><button class="btn btn-default auth-btn btn-login" type="button" (click)="login()"></button></span>
-    <span *ngIf="isLoggedIn()"><span (click)="login()">logout</span><button class="btn btn-default auth-btn btn-logout" type="button" (click)="logout()"></button></span>
+
+    <span *ngIf="!isLoggedIn()"><span (click)="login()">Anmelden </span><button class="btn btn-default auth-btn btn-login" type="button" (click)="login()"></button></span>
+    <span *ngIf="isLoggedIn()"><span (click)="login()">Abmelden </span><button class="btn btn-default auth-btn btn-logout" type="button" (click)="logout()"></button></span>
   </div>
 </nav>

@@ -1,0 +1,7 @@
+{
+    "stsUrl": "http://localhost:35854",
+    "clientUrl": "http://localhost:4200",
+    "authentication": true,
+    "clientId": "identitymanager",
+    "scopes": "openid profile mandant"
+}

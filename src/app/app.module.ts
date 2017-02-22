@@ -8,12 +8,20 @@ import { RouterModule, Routes } from '@angular/router';
 // Custom modules
 import { AppRoutingModule } from './app-routing.module';
 
+// 3rd-party services
+import { OAuthService } from 'angular2-oauth2/oauth-service';
+
+// Custom services
+import { WebConfigLoaderService } from './services/web-config-loader/web-config-loader.service';
+import { AuthGuardService } from './services/auth-guard/auth-guard.service';
+
 // Custom components
 import { AppComponent } from './app.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { HomeComponent } from './components/home/home.component';
 import { UsersComponent } from './components/users/users.component';
-import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { PageNotFoundComponent } from './components/error-pages/page-not-found/page-not-found.component';
+import { UnauthorizedComponent } from './components/error-pages/unauthorized/unauthorized.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +29,8 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
     NavigationComponent,
     HomeComponent,
     UsersComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    UnauthorizedComponent
   ],
   imports: [
     BrowserModule,
@@ -29,7 +38,11 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
     HttpModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [
+    OAuthService,
+    WebConfigLoaderService,
+    AuthGuardService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
