@@ -8,9 +8,14 @@ import { appRoutes } from './../../app-routing.module';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+  private authorizedTitle: string;
+  private unauthorizedTitle: string;
   private routes = appRoutes.filter(r => r.data['relevantForNav']);
 
-  constructor(private oauthService: OAuthService) { }
+  constructor(private oauthService: OAuthService) { 
+    this.authorizedTitle = "Willkommen beim IdentityManager";
+    this.unauthorizedTitle = "Hier anmelden:";
+  }
 
   ngOnInit() {
   }

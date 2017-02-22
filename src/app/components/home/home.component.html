@@ -1,12 +1,12 @@
 <div *ngIf="!isLoggedIn()" class="main-content unauthorized">
   <h1>
-    Hier anmelden: 
+    {{unauthorizedTitle}} 
     <button class="btn btn-lg btn-outline-primary" (click)="login()">Login</button>
   </h1>
 </div>
 <div *ngIf="isLoggedIn()" class="main-content authorized">
   <h1>
-    IdentityManager
+    {{authorizedTitle}}
   </h1>
   <div class="container-fluid">
   </div>

@@ -16,16 +16,20 @@ export class AppComponent {
   private webConfig: WebConfig;
 
   constructor(private oauthService: OAuthService, private webConfigLoaderService: WebConfigLoaderService) {
-    this.loadWebConfig();
+    this.configureAuthentication();
   }
 
-  private loadWebConfig() {
+  private configureAuthentication() {
     this.webConfigLoaderService.getWebConifg()
       .subscribe(data => {
         this.webConfig = new WebConfig(data.stsUrl, data.clientUrl, data.authentication, data.clientId, data.scopes)
         console.log(this.webConfig);
         this.webConfig = data;
-
+      },
+      error => {
+        console.log(error)
+      },
+      () => {
         this.configureOAuhtService();
       });
   }

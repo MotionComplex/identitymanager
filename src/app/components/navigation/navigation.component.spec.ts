@@ -5,6 +5,7 @@ import { DebugElement } from '@angular/core';
 
 import { NavigationComponent } from './navigation.component';
 import { RouterLinkStubDirective } from '../../../testing/router-stub';
+import { OAuthService } from 'angular2-oauth2/oauth-service';
 
 describe('NavigationComponent', () => {
   let component: NavigationComponent;
@@ -13,10 +14,19 @@ describe('NavigationComponent', () => {
   let el: HTMLElement;
 
   beforeEach(async(() => {
+    let oauthServiceStub = {
+      isLoggedIn: () => { return true },
+      hasValidAccessToken: () => { return true },
+      hasValidIdToken: () => { return true }
+    };
+
     TestBed.configureTestingModule({
       declarations: [ 
         NavigationComponent,
         RouterLinkStubDirective
+      ],
+      providers: [
+            { provide: OAuthService, useValue: oauthServiceStub }
       ]
     })
     .compileComponents();

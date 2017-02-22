@@ -13,6 +13,6 @@
     </ul>
 
     <span *ngIf="!isLoggedIn()"><span (click)="login()">Anmelden </span><button class="btn btn-default auth-btn btn-login" type="button" (click)="login()"></button></span>
-    <span *ngIf="isLoggedIn()"><span (click)="login()">Abmelden </span><button class="btn btn-default auth-btn btn-logout" type="button" (click)="logout()"></button></span>
+    <span *ngIf="isLoggedIn()"><span (click)="logout()">Abmelden </span><button class="btn btn-default auth-btn btn-logout" type="button" (click)="logout()"></button></span>
   </div>
 </nav>
