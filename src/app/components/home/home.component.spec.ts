@@ -41,28 +41,26 @@ describe('HomeComponent', () => {
   });
   
   it('should contain a login button', () => {
-    let isAuthorized = oauthServiceStub.hasValidAccessToken() && oauthServiceStub.hasValidIdToken();
-    if(!isAuthorized){
-      de = fixture.debugElement.query(By.css('button'));
-      el = de.nativeElement;
+    component['isLoggedIn'] = () => false;
 
-      expect(el).toBeDefined();
-    }
+    fixture.detectChanges();
+
+    de = fixture.debugElement.query(By.css('button'));
+    el = de.nativeElement;
+
+    expect(el).toBeDefined();
   });
 
   it('should show application title', () => {
     const expectedTitle = 'test title';
     component['authorizedTitle'] = expectedTitle;
+    component['isLoggedIn'] = () => true;
 
     fixture.detectChanges();
-
-    let isAuthorized = oauthServiceStub.hasValidAccessToken() && oauthServiceStub.hasValidIdToken();
-    if(isAuthorized){
-      de = fixture.debugElement.query(By.css('h1'));
-      el = de.nativeElement;
     
-      expect(el.innerHTML).toContain(expectedTitle);
-    }
+    de = fixture.debugElement.query(By.css('h1'));
+    el = de.nativeElement;
+  
+    expect(el.innerHTML).toContain(expectedTitle);
   });
-
 });

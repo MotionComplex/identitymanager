@@ -2,6 +2,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
+import { Routes } from '@angular/router'
 
 import { NavigationComponent } from './navigation.component';
 import { RouterLinkStubDirective } from '../../../testing/router-stub';
@@ -42,26 +43,57 @@ describe('NavigationComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should show application title \'IdentityManager\'', () => {
+  it('should show title', () => {
+    const expectedTitle = 'test title';
+    component['pageTitle'] = expectedTitle;
+
+    fixture.detectChanges();
+
     de = fixture.debugElement.query(By.css('.navbar-brand'));
     el = de.nativeElement;
 
-    expect(el.textContent).toBe('IdentityManager');
+    expect(el.textContent).toBe(expectedTitle);
   });
 
-  it('should contain navigation-link \'Benutzer\'', () => {
-    de = fixture.debugElement.query(By.css('a'));
+  it('should show navigation-links', () => {
+    const expectedRoutes =
+    [
+      {
+        path: 'path1',
+        data: {
+          title: 'title1',
+          relevantForNav: true
+        }
+      }
+    ];
+
+    component['routes'] = expectedRoutes;
+
+    fixture.detectChanges();
+
+    de = fixture.debugElement.query(By.css('.nav-link'));
     el = de.nativeElement;
 
-    expect(el.innerText).toBe('IdentityManager');
+    expect(el.innerText).toBe(expectedRoutes[0].data['title']);
   });
 
-  //TODO: Check both seperate
-  it('should contain a login or a logout button', () => {
+  it('should show a login button', () => {
+    component['isLoggedIn'] = () => false;
+
+    fixture.detectChanges();
+    
+    de = fixture.debugElement.query(By.css('.btn-login'));
+    el = de.nativeElement;
+
+    expect(el).toBeDefined();
+  });
+
+  it('should show a logout button', () => {
+    component['isLoggedIn'] = () => true;
+    
+    fixture.detectChanges();
+
     de = fixture.debugElement.query(By.css('.btn-logout'));
-    if(de === null || de === undefined){
-      de = fixture.debugElement.query(By.css('.btn-login'));
-    }
     el = de.nativeElement;
 
     expect(el).toBeDefined();

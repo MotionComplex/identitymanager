@@ -19,17 +19,17 @@ export class NavigationComponent implements OnInit {
   }
 
   private login() {
-    console.log('trying to log in');
+    // console.log('trying to log in');
     this.oauthService.initImplicitFlow();
   }
 
   private logout() {
-    console.log('trying to log out');
+    // console.log('trying to log out');
     this.oauthService.logOut();
   }
 
   private isLoggedIn(): boolean {
-    console.log('checking if is logged in');
+  //   console.log('checking if is logged in');
     return this.oauthService.hasValidIdToken() && this.oauthService.hasValidAccessToken();
   }
 }

@@ -1,0 +1,19 @@
+.search {
+    margin-top: 10px;
+}
+
+.td-date {
+    min-width: 150px;
+}
+.btn-view {
+    height:30px;
+    width: 20px;
+    float: right;
+    background-image: url("./assets/img/view.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+}
+tbody tr:hover {
+    background-color: #f2f2f2;
+    transition: 0.5s;
+}

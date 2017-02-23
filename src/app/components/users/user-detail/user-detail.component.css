@@ -1,0 +1,10 @@
+.useraccount-infos .input-group {
+    margin-bottom: 10px;
+}
+
+.input-group-addon-user {
+    min-width: 140px;
+}
+.button-container {
+    margin-top: 5px;
+}

@@ -3,6 +3,7 @@ import { RouterModule, Routes }  from '@angular/router';
 
 import { HomeComponent } from './components/home/home.component';
 import { UsersComponent } from './components/users/users.component';
+import { UserDetailComponent } from './components/users/user-detail/user-detail.component';
 import { PageNotFoundComponent } from './components/error-pages/page-not-found/page-not-found.component';
 import { UnauthorizedComponent } from './components/error-pages/unauthorized/unauthorized.component';
 import { AuthGuardService } from './services/auth-guard/auth-guard.service';
@@ -22,6 +23,17 @@ export const appRoutes: Routes = [
     data: {
       title: 'Benutzer',
       relevantForNav: true
+    },
+    canActivate: [
+      AuthGuardService
+    ]
+  },
+  {
+    path: 'users/:uid',
+    component: UserDetailComponent,
+    data: {
+      title: 'Benutzer Einzelansicht',
+      relevantForNav: false
     },
     canActivate: [
       AuthGuardService

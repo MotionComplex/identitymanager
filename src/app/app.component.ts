@@ -25,6 +25,7 @@ export class AppComponent {
         this.webConfig = new WebConfig(data.stsUrl, data.clientUrl, data.authentication, data.clientId, data.scopes)
         console.log(this.webConfig);
         this.webConfig = data;
+        this.webConfig;
       },
       error => {
         console.log(error)

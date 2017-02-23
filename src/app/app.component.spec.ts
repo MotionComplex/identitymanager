@@ -15,20 +15,19 @@ import { WebConfig } from './models/web-config/web-config';
 
 describe('AppComponent', () => {
   let webConfig: WebConfig = {
-    "stsUrl": "http://localhost:35854",
-    "clientUrl": "http://localhost:4200",
+    "stsUrl": "test",
+    "clientUrl": "test",
     "authentication": true,
-    "clientId": "identitymanager",
-    "scopes": "openid profile mandant"
+    "clientId": "test",
+    "scopes": "test",
+  };
+  let webConfigLoaderServiceStub = {
+    getWebConifg: () => {
+      return Observable.of(webConfig);
+    }
   };
 
   beforeEach(() => {
-    let webConfigLoaderServiceStub = {
-      getWebConifg: () => {
-        return Observable.of(webConfig);
-      }
-    };
-
     let oauthServiceStub = {
       isLoggedIn: () => { return true },
       hasValidAccessToken: () => { return true },
@@ -59,4 +58,22 @@ describe('AppComponent', () => {
     const app = fixture.debugElement.componentInstance;
     expect(app).toBeTruthy();
   }));
+
+  it('should get Web Config', async(() => {
+    const webconfigMock = {
+      "stsUrl": "test",
+      "clientUrl": "test",
+      "authentication": true,
+      "clientId": "test",
+      "scopes": "test",
+    };
+
+    webConfigLoaderServiceStub.getWebConifg().subscribe(data => {
+      expect(data.stsUrl).toEqual('test');
+      expect(data.clientUrl).toEqual('test');
+      expect(data.authentication).toEqual(true);
+      expect(data.clientId).toEqual('test');
+      expect(data.scopes).toEqual('test');
+    });
+  }))
 });

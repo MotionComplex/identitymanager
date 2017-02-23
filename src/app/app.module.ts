@@ -22,6 +22,7 @@ import { HomeComponent } from './components/home/home.component';
 import { UsersComponent } from './components/users/users.component';
 import { PageNotFoundComponent } from './components/error-pages/page-not-found/page-not-found.component';
 import { UnauthorizedComponent } from './components/error-pages/unauthorized/unauthorized.component';
+import { UserDetailComponent } from './components/users/user-detail/user-detail.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { UnauthorizedComponent } from './components/error-pages/unauthorized/una
     HomeComponent,
     UsersComponent,
     PageNotFoundComponent,
-    UnauthorizedComponent
+    UnauthorizedComponent,
+    UserDetailComponent
   ],
   imports: [
     BrowserModule,

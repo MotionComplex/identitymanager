@@ -24,7 +24,9 @@ describe('AuthGuardService', () => {
     });
   });
 
-  it('should ...', inject([AuthGuardService], (service: AuthGuardService) => {
-    expect(service).toBeTruthy();
+  it('should activate routes', inject([AuthGuardService], (service: AuthGuardService) => {
+    service['canActivate'] = () => true;
+
+    expect(service.canActivate()).toBe(true)
   }));
 });

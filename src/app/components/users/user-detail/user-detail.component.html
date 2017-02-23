@@ -1,0 +1,66 @@
+<div class="main-content">  
+  <h4>{{pageTitle}}</h4>
+  <div *ngIf="userAccount" class="container-fluid useraccount-infos">
+    <div class="input-group">
+      <span class="input-group-addon input-group-addon-user">*Benutzername</span>
+      <input type="text" class="form-control"[(ngModel)]="userAccount.username">
+    </div>
+    <!--<hr>-->
+    <div class="input-group">
+      <span class="input-group-addon input-group-addon-user">Vorname</span>
+      <input type="text" class="form-control"[(ngModel)]="userAccount.firstname">
+    </div>
+    <!--<hr>-->
+    <div class="input-group">
+      <span class="input-group-addon input-group-addon-user">Nachname</span>
+      <input type="text" class="form-control"[(ngModel)]="userAccount.lastname">
+    </div>
+    <!--<hr>-->
+    <div class="input-group">
+      <span class="input-group-addon input-group-addon-user">Identifier</span>
+      <input type="text" class="form-control"[(ngModel)]="userAccount.identifier">
+    </div>
+    <!--<hr>-->
+    <div class="input-group">
+      <span class="input-group-addon input-group-addon-user">E-Mail</span>
+      <input type="text" class="form-control"[(ngModel)]="userAccount.email">
+    </div>
+    <!--<hr>-->
+    <div class="input-group">
+      <span class="input-group-addon input-group-addon-user">*Gültig ab</span>
+      <input type="text" class="form-control"[(ngModel)]="userAccount.validFrom">
+    </div>
+    <!--<hr>-->
+    <div class="input-group">
+      <span class="input-group-addon input-group-addon-user">Gültig bis</span>
+      <input type="text" class="form-control"[(ngModel)]="userAccount.validTo">
+    </div>
+    <hr>
+    <h5>Mandanten</h5>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Titel</th>
+          <th>Name</th>
+          <th>zuweisen</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let mandator of mandators">
+          <td>{{mandator.title}}</td>
+          <td>{{mandator.name}}</td>
+          <td>
+            <input type="checkbox">
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="button-container">
+      <div class="btn-group" role="group" aria-label="...">
+        <button type="button" class="btn btn-default" (click)="save()">Speichern</button>
+        <button type="button" class="btn btn-danger" (click)="delete()">Löschen</button>
+      </div>
+      <button type="button" class="btn btn-primary" (click)="cancle()">Abbrechen</button>
+    </div>
+  </div>
+</div>

@@ -6,11 +6,14 @@
 html, body {
     height: 100%;
 }
-.main-content{
+.main-content {
     position: relative;
     min-height: 550px;
     padding-bottom: 160px;
 }
-.main-content h1{
+.main-content h1 {
     padding-top: 20px;
+}
+.main-content h4 {
+    padding: 10px 0;
 }
