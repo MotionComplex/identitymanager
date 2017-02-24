@@ -20,29 +20,22 @@ export class UsersComponent implements OnInit {
   constructor(private router: Router, private userService: UserService) { }
 
   private searchUsers() {
-    this.filteredUsers = this.users.filter(u => (u.username !== null && u.username.toLocaleLowerCase().includes(this.searchString.toLocaleLowerCase())) ||
-                                                (u.lastname !== null && u.lastname.toLocaleLowerCase().includes(this.searchString.toLocaleLowerCase())) ||
-                                                (u.firstname !== null && u.firstname.toLocaleLowerCase().includes(this.searchString.toLocaleLowerCase())) ||
-                                                (u.emailAddress !== null && u.emailAddress.toLocaleLowerCase().includes(this.searchString.toLocaleLowerCase())));
+    this.filteredUsers = this.users.filter(u => (u.Name !== null && u.Name.toLocaleLowerCase().includes(this.searchString.toLocaleLowerCase())) ||
+                                                (u.Lastname !== null && u.Lastname.toLocaleLowerCase().includes(this.searchString.toLocaleLowerCase())) ||
+                                                (u.Firstname !== null && u.Firstname.toLocaleLowerCase().includes(this.searchString.toLocaleLowerCase())) ||
+                                                (u.EmailAddress !== null && u.EmailAddress.toLocaleLowerCase().includes(this.searchString.toLocaleLowerCase())));
   }
 
   private loadUsers() {
     this.userService.getUsers().subscribe(data => {
-      this.users = new Array<User>();
-
-      data.forEach(u => {
-        this.users.push(new User(u['UID'], u['Name'], u['Lastname'], u['Firstname'], u['EmailAddress']));
-      })
-      console.log('user data:');
-      console.log(JSON.stringify(data));
-      
+      this.users = data;
       this.filteredUsers = this.users;
     });
   }
 
-  selectUser(user: User) {
+  private selectUser(user: User) {
     console.log('Opening user');
-    this.router.navigate(['/users', user.uid]);
+    this.router.navigate(['/users', user.UID]);
   }
 
   private createUser() {

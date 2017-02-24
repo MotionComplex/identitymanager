@@ -1,5 +1,6 @@
 export class Mandator {
-    constructor(public uid: string,
-                public title: string,
-                public name: string) {}
+    constructor(public UID: string,
+                public Title: string,
+                public Name: string,
+                public IsAssigned: boolean) {}
 }

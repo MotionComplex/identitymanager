@@ -16,10 +16,10 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let user of filteredUsers">
-          <td>{{user.username}}</td>
-          <td class="hidden-xs-down">{{user.lastname}}</td>
-          <td class="hidden-sm-down">{{user.firstname}}</td>
+        <tr *ngFor="let user of filteredUsers" on-dblclick="selectUser(user)">
+          <td>{{user.Name}}</td>
+          <td class="hidden-xs-down">{{user.Lastname}}</td>
+          <td class="hidden-sm-down">{{user.Firstname}}</td>
           <td>
             <button class="btn btn-default btn-view" (click)="selectUser(user)"></button>
           </td>

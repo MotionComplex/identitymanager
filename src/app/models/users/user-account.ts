@@ -1,10 +1,22 @@
 export class UserAccount {
-    constructor(public uid: string, 
-                public username: string, 
-                public firstname: string,
-                public lastname: string,
-                public email: string,
-                public identifier: string,
-                public validFrom: string,
-                public validTo: string) {}
+    constructor(public UID: string,
+                public Name: string,
+                public Firstname: string,
+                public Lastname: string,
+                public Identifier: string,
+                public EmailAddress: string,
+                public ValidFrom: Date,
+                public ValidTo: Date) {}
 }
+
+// export class UserAccount {
+//     public UID: string;
+//     public Name: string;
+//     public Firstname: string;
+//     public Lastname: string;
+//     public Identifier: string;
+//     public EmailAddress: string;
+//     public Mobile: string;
+//     public ValidFrom: Date;
+//     public ValidTo: Date;
+// }

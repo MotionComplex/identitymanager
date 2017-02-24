@@ -1,40 +1,86 @@
-<div class="main-content">  
+<div class="main-content">
   <h4>{{pageTitle}}</h4>
   <div *ngIf="userAccount" class="container-fluid useraccount-infos">
     <div class="input-group">
       <span class="input-group-addon input-group-addon-user">*Benutzername</span>
-      <input type="text" class="form-control"[(ngModel)]="userAccount.username">
+      <input type="text"
+             class="form-control form-control-success"
+             [(ngModel)]="userAccount.Name"
+             #name="ngModel"
+             (ngModelChange)="viewChanged()"
+             required>
     </div>
-    <!--<hr>-->
+    <div *ngIf="name.errors && (name.dirty || name.touched)"
+         class="alert alert-danger">
+        <div [hidden]="!name.errors.required">
+            Username is required
+        </div>
+    </div>
     <div class="input-group">
       <span class="input-group-addon input-group-addon-user">Vorname</span>
-      <input type="text" class="form-control"[(ngModel)]="userAccount.firstname">
+      <input type="text"
+             class="form-control"
+             [(ngModel)]="userAccount.Firstname"
+             (ngModelChange)="viewChanged()">
     </div>
-    <!--<hr>-->
     <div class="input-group">
       <span class="input-group-addon input-group-addon-user">Nachname</span>
-      <input type="text" class="form-control"[(ngModel)]="userAccount.lastname">
+      <input type="text"
+             class="form-control"
+             [(ngModel)]="userAccount.Lastname"
+             (ngModelChange)="viewChanged()">
     </div>
-    <!--<hr>-->
     <div class="input-group">
-      <span class="input-group-addon input-group-addon-user">Identifier</span>
-      <input type="text" class="form-control"[(ngModel)]="userAccount.identifier">
+      <span class="input-group-addon input-group-addon-user">*Identifier</span>
+      <input type="text"
+             class="form-control"
+             [disabled]="!isNewAccount"
+             [(ngModel)]="userAccount.Identifier"
+             #identifier="ngModel"
+             (ngModelChange)="viewChanged()"
+             required>
     </div>
-    <!--<hr>-->
+    <div *ngIf="identifier.errors && (identifier.dirty || identifier.touched)"
+         class="alert alert-danger">
+        <div [hidden]="!identifier.errors.required">
+            Identifier is required
+        </div>
+    </div>
     <div class="input-group">
       <span class="input-group-addon input-group-addon-user">E-Mail</span>
-      <input type="text" class="form-control"[(ngModel)]="userAccount.email">
+      <input type="text"
+             class="form-control"
+             [(ngModel)]="userAccount.Email"
+             (ngModelChange)="viewChanged()">
     </div>
-    <!--<hr>-->
     <div class="input-group">
       <span class="input-group-addon input-group-addon-user">*Gültig ab</span>
-      <input type="text" class="form-control"[(ngModel)]="userAccount.validFrom">
+      <input class="form-control" 
+              name="dp"
+              ngbDatepicker #d="ngbDatepicker"
+              [(ngModel)]="userAccount.ValidFrom"
+              #validFrom="ngModel"
+              (ngModelChange)="validFromChanged(userAccount.ValidFrom)"
+              required>
+      <div class="input-group-addon" (click)="d.toggle()" >
+        <img src="assets/img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/>
+      </div>
     </div>
-    <!--<hr>-->
+    {{userAccount.ValidFrom}}
+    <div *ngIf="validFrom.errors && (validFrom.dirty || validFrom.touched)"
+         class="alert alert-danger">
+        <div [hidden]="!validFrom.errors.required">
+            This date is required
+        </div>
+    </div>
     <div class="input-group">
       <span class="input-group-addon input-group-addon-user">Gültig bis</span>
-      <input type="text" class="form-control"[(ngModel)]="userAccount.validTo">
+      <input type="text"
+             class="form-control"
+             [(ngModel)]="userAccount.ValidTo"
+             (ngModelChange)="viewChanged()">
     </div>
+    <!--<app-datepicker></app-datepicker>-->
     <hr>
     <h5>Mandanten</h5>
     <table class="table">
@@ -47,20 +93,25 @@
       </thead>
       <tbody>
         <tr *ngFor="let mandator of mandators">
-          <td>{{mandator.title}}</td>
-          <td>{{mandator.name}}</td>
+          <td>{{mandator.Title}}</td>
+          <td>{{mandator.Name}}</td>
           <td>
-            <input type="checkbox">
+            <input type="checkbox"
+                   [(ngModel)]="mandator.IsAssigned"
+                   (click)="toggleAssignedMandator(mandator)"
+                   (ngModelChange)="viewChanged()">
           </td>
         </tr>
       </tbody>
     </table>
+    <hr>
     <div class="button-container">
       <div class="btn-group" role="group" aria-label="...">
-        <button type="button" class="btn btn-default" (click)="save()">Speichern</button>
-        <button type="button" class="btn btn-danger" (click)="delete()">Löschen</button>
+        <button type="button" class="btn btn-default" (click)="save()" [disabled]="!viewHasChanges || !assignedMandator || !name.value || !validFrom.value || !identifier.value">Speichern</button>
+        <button type="button" class="btn btn-primary" (click)="cancle()">Abbrechen</button>
+        <!--<button type="button" class="btn btn-danger" (click)="delete()">Löschen</button>-->
       </div>
-      <button type="button" class="btn btn-primary" (click)="cancle()">Abbrechen</button>
+      <!--<button type="button" class="btn btn-primary" (click)="cancle()">Abbrechen</button>-->
     </div>
   </div>
 </div>

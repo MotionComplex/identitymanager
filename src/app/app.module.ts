@@ -5,6 +5,9 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
 
+// 3rd-party modules
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 // Custom modules
 import { AppRoutingModule } from './app-routing.module';
 
@@ -38,7 +41,8 @@ import { UserDetailComponent } from './components/users/user-detail/user-detail.
     BrowserModule,
     FormsModule,
     HttpModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgbModule.forRoot()
   ],
   providers: [
     OAuthService,

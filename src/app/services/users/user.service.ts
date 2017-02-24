@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, RequestOptions } from '@angular/http';
+import { Http, Headers, RequestOptions, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { User } from '../../models/users/user';
 import { UserAccount } from '../../models/users/user-account';
@@ -23,7 +23,7 @@ export class UserService {
       .map(res => res.json());
   }
 
-  public getUserAccount(uid: string): Observable<any> {
+  public getUserAccount(uid: string): Observable<UserAccount> {
     return this.http.get(`${this.usersUrl}?uid=${uid}`, this.options)
       .map(res => res.json())
   }
@@ -31,5 +31,11 @@ export class UserService {
   public getMandators(): Observable<Mandator[]> {
     return this.http.get(this.mandatorsUrl, this.options)
       .map(res => res.json())
+  }
+
+  public addOrUpdateUser(mandatorUid, userAccount): Observable<Response>{
+    let body = userAccount;
+    let url = `${this.usersUrl}/${mandatorUid}`;
+    return this.http.put(url, body);
   }
 }
