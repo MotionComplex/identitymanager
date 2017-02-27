@@ -19,6 +19,7 @@ export class UsersComponent implements OnInit {
 
   constructor(private router: Router, private userService: UserService) { }
 
+  // searchs users by the searchString
   private searchUsers() {
     this.filteredUsers = this.users.filter(u => (u.Name !== null && u.Name.toLocaleLowerCase().includes(this.searchString.toLocaleLowerCase())) ||
                                                 (u.Lastname !== null && u.Lastname.toLocaleLowerCase().includes(this.searchString.toLocaleLowerCase())) ||
@@ -26,6 +27,7 @@ export class UsersComponent implements OnInit {
                                                 (u.EmailAddress !== null && u.EmailAddress.toLocaleLowerCase().includes(this.searchString.toLocaleLowerCase())));
   }
 
+  // loads all the users for the user overview via UserService
   private loadUsers() {
     this.userService.getUsers().subscribe(data => {
       this.users = data;
@@ -33,11 +35,13 @@ export class UsersComponent implements OnInit {
     });
   }
 
-  private selectUser(user: User) {
+  // opens the detail view of the selected/clicked user
+  private openUser(user: User) {
     console.log('Opening user');
     this.router.navigate(['/users', user.UID]);
   }
 
+  // opens the user detail view with empty data 
   private createUser() {
     console.log('Creating new user');
     this.router.navigate(['/users', '00000000-0000-0000-0000-000000000000']);

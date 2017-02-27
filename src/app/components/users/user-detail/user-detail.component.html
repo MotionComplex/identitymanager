@@ -1,6 +1,22 @@
+<template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Ihre Änderungen gehen verloren</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>Möchten Ihre Änderungen vorher speichern?</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="saveChanges()">Ja</button>
+    <button type="button" class="btn btn-secondary" (click)="discardChanges()">Nein</button>
+  </div>
+</template>
+
 <div class="main-content">
-  <h4>{{pageTitle}}</h4>
   <div *ngIf="userAccount" class="container-fluid useraccount-infos">
+    <h4>{{pageTitle}}</h4>
     <div class="input-group">
       <span class="input-group-addon input-group-addon-user">*Benutzername</span>
       <input type="text"
@@ -50,7 +66,7 @@
       <span class="input-group-addon input-group-addon-user">E-Mail</span>
       <input type="text"
              class="form-control"
-             [(ngModel)]="userAccount.Email"
+             [(ngModel)]="userAccount.EmailAddress"
              (ngModelChange)="viewChanged()">
     </div>
     <div class="input-group">
@@ -80,7 +96,6 @@
              [(ngModel)]="userAccount.ValidTo"
              (ngModelChange)="viewChanged()">
     </div>
-    <!--<app-datepicker></app-datepicker>-->
     <hr>
     <h5>Mandanten</h5>
     <table class="table">
@@ -108,10 +123,8 @@
     <div class="button-container">
       <div class="btn-group" role="group" aria-label="...">
         <button type="button" class="btn btn-default" (click)="save()" [disabled]="!viewHasChanges || !assignedMandator || !name.value || !validFrom.value || !identifier.value">Speichern</button>
-        <button type="button" class="btn btn-primary" (click)="cancle()">Abbrechen</button>
-        <!--<button type="button" class="btn btn-danger" (click)="delete()">Löschen</button>-->
+        <button type="button" class="btn btn-primary" (click)="cancle(content)">Abbrechen</button>
       </div>
-      <!--<button type="button" class="btn btn-primary" (click)="cancle()">Abbrechen</button>-->
     </div>
   </div>
 </div>

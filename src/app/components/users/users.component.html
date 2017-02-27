@@ -1,33 +1,37 @@
-<div class="main-content">  
-  <h4>{{pageTitle}}</h4>
-  <div *ngIf="filteredUsers" class="container-fluid">
-    <div class="search">
-      <div class="input-group">
-        <input type="text" class="form-control" placeholder="Search users" [(ngModel)]="searchString" (keyup)="searchUsers()">
+<div class="main-content">
+  <div class="container-fluid users-container">
+    <h4>{{pageTitle}}</h4>
+    <div *ngIf="filteredUsers">
+      <div class="search">
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Suche nach Name, Vorname, Benutzername und E-Mail" [(ngModel)]="searchString" (keyup)="searchUsers()">
+        </div>
       </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Benutzername</th>
+            <th class="hidden-xs-down">Name</th>
+            <th class="hidden-sm-down">Vorname</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of filteredUsers" on-dblclick="openUser(user)">
+            <td>{{user.Name}}</td>
+            <td class="hidden-xs-down">{{user.Lastname}}</td>
+            <td class="hidden-sm-down">{{user.Firstname}}</td>
+            <td>
+              <button class="btn btn-default btn-view" (click)="openUser(user)"></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Benutzername</th>
-          <th class="hidden-xs-down">Name</th>
-          <th class="hidden-sm-down">Vorname</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let user of filteredUsers" on-dblclick="selectUser(user)">
-          <td>{{user.Name}}</td>
-          <td class="hidden-xs-down">{{user.Lastname}}</td>
-          <td class="hidden-sm-down">{{user.Firstname}}</td>
-          <td>
-            <button class="btn btn-default btn-view" (click)="selectUser(user)"></button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <div *ngIf="filteredUsers.length === 0" class="alert alert-warning" role="alert">
-      Es wurden keine Benutzer gefunden!
+    <div *ngIf="filteredUsers === undefined || filteredUsers === null || filteredUsers.length === 0" class="container-fluid">
+      <div class="alert alert-warning" role="alert">
+        Es wurden keine Benutzer gefunden!
+      </div>
     </div>
     <button class="btn btn-primary" (click)="createUser()">Benutzer hinzufügen</button>
   </div>

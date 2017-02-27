@@ -66,7 +66,6 @@ export class NavigationStubComponent implements OnInit {
     console.log('trying to log out');
   }
 
-  // TODO: Return state from service
   private isLoggedIn(): boolean {
     console.log('checking if is logged in');
     return false;

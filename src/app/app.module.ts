@@ -17,6 +17,7 @@ import { OAuthService } from 'angular2-oauth2/oauth-service';
 // Custom services
 import { WebConfigLoaderService } from './services/web-config-loader/web-config-loader.service';
 import { AuthGuardService } from './services/auth-guard/auth-guard.service';
+import { GuidValidatorService } from './services/guid-validator/guid-validator.service';
 
 // Custom components
 import { AppComponent } from './app.component';
@@ -26,6 +27,7 @@ import { UsersComponent } from './components/users/users.component';
 import { PageNotFoundComponent } from './components/error-pages/page-not-found/page-not-found.component';
 import { UnauthorizedComponent } from './components/error-pages/unauthorized/unauthorized.component';
 import { UserDetailComponent } from './components/users/user-detail/user-detail.component';
+import { SaveChangesModalComponent } from './components/modals/save-changes-modal/save-changes-modal.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,8 @@ import { UserDetailComponent } from './components/users/user-detail/user-detail.
     UsersComponent,
     PageNotFoundComponent,
     UnauthorizedComponent,
-    UserDetailComponent
+    UserDetailComponent,
+    SaveChangesModalComponent
   ],
   imports: [
     BrowserModule,
@@ -47,7 +50,8 @@ import { UserDetailComponent } from './components/users/user-detail/user-detail.
   providers: [
     OAuthService,
     WebConfigLoaderService,
-    AuthGuardService
+    AuthGuardService,
+    GuidValidatorService
   ],
   bootstrap: [AppComponent]
 })

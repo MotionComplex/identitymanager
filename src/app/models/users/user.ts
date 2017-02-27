@@ -5,11 +5,3 @@ export class User {
                 public Firstname: string,
                 public EmailAddress: string) {}
 }
-
-// export class User {
-//     public UID: string;
-//     public Name: string;
-//     public Lastname: string;
-//     public Firstname: string;
-//     public EmailAddress: string;
-// }

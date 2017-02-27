@@ -1,7 +1,13 @@
+// agnular imports
 import { Component } from '@angular/core';
+
+// 3rd-party services
 import { OAuthService } from 'angular2-oauth2/oauth-service';
+
+// custom services
 import { WebConfigLoaderService } from './services/web-config-loader/web-config-loader.service';
 
+// models
 import { WebConfig } from './models/web-config/web-config';
 
 @Component({
@@ -10,16 +16,14 @@ import { WebConfig } from './models/web-config/web-config';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  private stsUrl: string = 'http://localhost:35854';
-  private scopes: string = 'openid profile mandant';
-  private clientUrl: string = 'http://localhost:4200';
   private webConfig: WebConfig;
 
   constructor(private oauthService: OAuthService, private webConfigLoaderService: WebConfigLoaderService) {
-    this.configureAuthentication();
+    this.loadWebConfig();
   }
 
-  private configureAuthentication() {
+  // loads data from the web.config.json file via webConfigLoaderService and configures oauth-service after that
+  private loadWebConfig() {
     this.webConfigLoaderService.getWebConifg()
       .subscribe(data => {
         this.webConfig = new WebConfig(data.stsUrl, data.clientUrl, data.authentication, data.clientId, data.scopes)
@@ -35,6 +39,7 @@ export class AppComponent {
       });
   }
 
+  // sets all relevant values for authentication on IdentityServer via OAuthService (angular2-oauth2)
   private configureOAuhtService() {
       this.oauthService.loginUrl = this.webConfig.stsUrl + '/core/connect/authorize';
       this.oauthService.redirectUri = window.location.protocol + '//' + window.location.host;
