@@ -4,7 +4,7 @@
     <div *ngIf="filteredUsers">
       <div class="search">
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="Suche nach Name, Vorname, Benutzername und E-Mail" [(ngModel)]="searchString" (keyup)="searchUsers()">
+          <input type="text" class="form-control" placeholder="Suche nach Benutzername, Name und Vorname" [(ngModel)]="searchString" (keyup)="searchUsers()">
         </div>
       </div>
       <table class="table">
@@ -28,7 +28,7 @@
         </tbody>
       </table>
     </div>
-    <div *ngIf="filteredUsers === undefined || filteredUsers === null || filteredUsers.length === 0" class="container-fluid">
+    <div *ngIf="filteredUsers === undefined || filteredUsers === null || filteredUsers.length === 0">
       <div class="alert alert-warning" role="alert">
         Es wurden keine Benutzer gefunden!
       </div>

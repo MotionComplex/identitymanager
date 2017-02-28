@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./page-not-found.component.css']
 })
 export class PageNotFoundComponent implements OnInit {
+  private pageTitle: string = '404 - Page not found'
+  private warnMessage: string = 'The page you requested was not found.';
 
   constructor() { }
 

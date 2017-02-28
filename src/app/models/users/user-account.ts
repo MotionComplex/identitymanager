@@ -5,6 +5,6 @@ export class UserAccount {
                 public Lastname: string,
                 public Identifier: string,
                 public EmailAddress: string,
-                public ValidFrom: Date,
-                public ValidTo: Date) {}
+                public ValidFrom: string,
+                public ValidTo: string) {}
 }
