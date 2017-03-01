@@ -5,11 +5,13 @@ import { DebugElement } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule, Response } from '@angular/http';
 import { RouterTestingModule } from '@angular/router/testing';
-import { NgbModal, NgbModalRef, NgbDatepicker, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
 // 3rd-party libraries
 import { Observable } from 'rxjs/Observable';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef, NgbDatepicker, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { ModalModule } from 'angular2-modal';
+import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
 
 // custom services
 import { UserService } from '../../../services/users/user.service';
@@ -48,7 +50,9 @@ describe('UserDetailComponent', () => {
         HttpModule,
         FormsModule,
         RouterTestingModule,
-        NgbModule.forRoot()
+        NgbModule.forRoot(),
+        ModalModule.forRoot(),
+        BootstrapModalModule
       ],
       providers: [
         { provide: UserService, useValue: userServiceStub },

@@ -1,7 +1,7 @@
 // agnular imports
-import { Component } from '@angular/core';
+import { Component, ViewContainerRef } from '@angular/core';
 
-// 3rd-party services
+// 3rd-party imports
 import { OAuthService } from 'angular2-oauth2/oauth-service';
 
 // custom services
@@ -18,9 +18,10 @@ import { WebConfig } from './models/web-config/web-config';
 export class AppComponent {
   private webConfig: WebConfig;
 
-  constructor(private oauthService: OAuthService, private webConfigLoaderService: WebConfigLoaderService) {
-    this.loadWebConfig();
-  }
+  constructor(private oauthService: OAuthService, 
+              private webConfigLoaderService: WebConfigLoaderService) {
+                this.loadWebConfig();
+              }
 
   // loads data from the web.config.json file via webConfigLoaderService and configures oauth-service after that
   private loadWebConfig() {
@@ -48,7 +49,7 @@ export class AppComponent {
       this.oauthService.scope = this.webConfig.scopes;
       this.oauthService.oidc = true;
       this.oauthService.setStorage(localStorage);
-      this.oauthService.logoutUrl = this.webConfig.stsUrl + "/core/connect/endsession?id_token={{id_token}}&post_logout_redirect_uri=" + this.webConfig.clientUrl;
+      this.oauthService.logoutUrl = this.webConfig.stsUrl + '/core/connect/endsession?id_token_hint={{id_token}}&post_logout_redirect_uri=' + this.webConfig.clientUrl;
       this.oauthService.tryLogin({});
   }
 }

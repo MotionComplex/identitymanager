@@ -3,6 +3,9 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
+// 3rd-party services
+import { OAuthService } from 'angular2-oauth2/oauth-service';
+
 import { UnauthorizedComponent } from './unauthorized.component';
 
 describe('UnauthorizedComponent', () => {
@@ -11,7 +14,10 @@ describe('UnauthorizedComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UnauthorizedComponent ]
+      declarations: [ UnauthorizedComponent ],
+      providers: [
+        OAuthService
+      ]
     })
     .compileComponents();
   }));

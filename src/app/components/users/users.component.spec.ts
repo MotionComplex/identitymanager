@@ -6,6 +6,10 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterTestingModule } from '@angular/router/testing';
 
+// 3rd-party libraries
+import { ModalModule } from 'angular2-modal';
+import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
+
 // custom services
 import { UserService } from '../../services/users/user.service';
 import { WebConfigLoaderService } from '../../services/web-config-loader/web-config-loader.service';
@@ -39,7 +43,9 @@ describe('UsersComponent', () => {
       imports: [
         FormsModule,
         HttpModule,
-        RouterTestingModule
+        RouterTestingModule,
+        ModalModule.forRoot(),
+        BootstrapModalModule
       ],
       providers: [
         { provide: UserService, useValue: userServiceStub },

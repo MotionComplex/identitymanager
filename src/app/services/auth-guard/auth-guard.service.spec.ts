@@ -6,17 +6,11 @@ import { AuthGuardService } from './auth-guard.service';
 import { OAuthService } from 'angular2-oauth2/oauth-service';
 
 describe('AuthGuardService', () => {
-  let oauthServiceStub = {
-    isLoggedIn: () => { return true },
-    hasValidAccessToken: () => { return true },
-    hasValidIdToken: () => { return true }
-  };
-
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         AuthGuardService,
-        { provide: OAuthService, useValue: oauthServiceStub }
+        OAuthService
       ],
       imports: [
         RouterTestingModule
@@ -24,9 +18,21 @@ describe('AuthGuardService', () => {
     });
   });
 
+  it('should inject the service', inject([AuthGuardService], (service: AuthGuardService) => {
+    expect(service).toBeTruthy();
+  }));
+
   it('should activate routes', inject([AuthGuardService], (service: AuthGuardService) => {
-    service['canActivate'] = () => true;
+    service['oauthService'].hasValidAccessToken = () => { return true; }
+    service['oauthService'].hasValidIdToken = () => { return true; }
 
     expect(service.canActivate()).toBe(true)
+  }));
+
+  it('should deactivate routes', inject([AuthGuardService], (service: AuthGuardService) => {
+    service['oauthService'].hasValidAccessToken = () => { return false; }
+    service['oauthService'].hasValidIdToken = () => { return false; }
+
+    expect(service.canActivate()).toBe(false)
   }));
 });

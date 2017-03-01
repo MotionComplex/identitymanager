@@ -10,7 +10,7 @@ describe('GuidValidatorService', () => {
     });
   });
 
-  it('should ...', inject([GuidValidatorService], (service: GuidValidatorService) => {
+  it('should inject the service', inject([GuidValidatorService], (service: GuidValidatorService) => {
     expect(service).toBeTruthy();
   }));
 });

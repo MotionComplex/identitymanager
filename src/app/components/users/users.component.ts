@@ -1,7 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+// angular imports
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { User } from '../../models/users/user';
+
+// 3rd-party imports
+import { Overlay, DialogRef } from 'angular2-modal';
+import { Modal } from 'angular2-modal/plugins/bootstrap';
+
+// custom services
 import { UserService } from '../../services/users/user.service';
+
+// models
+import { User } from '../../models/users/user';
 
 @Component({
   selector: 'app-users',
@@ -16,8 +25,15 @@ export class UsersComponent implements OnInit {
   private users: User[];
   private filteredUsers: User[];
   private searchString: string;
+  private hasConnectionToServer: boolean;
 
-  constructor(private router: Router, private userService: UserService) { }
+  constructor(private router: Router, 
+              private userService: UserService,
+              public modal: Modal,
+              overlay: Overlay, 
+              vcRef: ViewContainerRef) {
+                overlay.defaultViewContainer = vcRef;
+              }
 
   // searchs users by the searchString
   private searchUsers() {
@@ -27,11 +43,51 @@ export class UsersComponent implements OnInit {
                                                 (u.EmailAddress !== null && u.EmailAddress.toLocaleLowerCase().includes(this.searchString.toLocaleLowerCase())));
   }
 
+  // orders the users by the username
+  private orderByName() {
+    this.filteredUsers = this.filteredUsers.sort((a, b) => {
+      let nameA = a.Name
+      let nameB = b.Name;
+
+      if (nameA < nameB) return -1;
+      if (nameA > nameB) return 1;
+      return 0;
+    })
+  }
+  
+  // orders the users by the firstname
+  private orderByFirstname() {
+    this.filteredUsers = this.filteredUsers.sort((a, b) => {
+      let firstnameA = a.Firstname
+      let firstnameB = b.Firstname;
+
+      if (firstnameA < firstnameB) return -1;
+      if (firstnameA > firstnameB) return 1;
+      return 0;
+    })
+  }
+  
+  // orders the users by their lastname
+  private orderByLastname() {
+    this.filteredUsers = this.filteredUsers.sort((a, b) => {
+      let lastnameA = a.Lastname;
+      let lastnameB = b.Lastname;
+
+      if (lastnameA < lastnameB) return -1;
+      if (lastnameA > lastnameB) return 1;
+      return 0;
+    })
+  }
+
   // loads all the users for the user overview via UserService
   private loadUsers() {
+    this.hasConnectionToServer = false;
     this.userService.getUsers().subscribe(data => {
       this.users = data;
       this.filteredUsers = this.users;
+      this.hasConnectionToServer = true;
+    }, (error: any) => {
+      this.openErrorModal();
     });
   }
 
@@ -45,6 +101,23 @@ export class UsersComponent implements OnInit {
   private createUser() {
     console.log('Creating new user');
     this.router.navigate(['/users', '00000000-0000-0000-0000-000000000000']);
+  }
+
+  // opens a modal if an error occurres while trying to save or upate the user account
+  private openErrorModal() {
+    this.modal.alert()
+      .title('Fehler beim Abrufen der Benutzer')
+      .body(`      
+        <div class="alert alert-warning" role="alert">
+          <p>Beim Versuch die Benutzer abzurufen, ist ein Fehler aufgetreten.</p>
+          <p>Möglicherweise besteht keine Verbindung zum Server.</p>
+        </div>     
+        <div class="alert" role="alert">
+          Bitte versuchen sie es später nochmals!
+        </div>
+      `)
+      .isBlocking(false)
+      .open();
   }
 
   ngOnInit() {

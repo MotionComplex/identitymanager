@@ -10,9 +10,9 @@
       <table class="table">
         <thead>
           <tr>
-            <th>Benutzername</th>
-            <th class="hidden-xs-down">Name</th>
-            <th class="hidden-sm-down">Vorname</th>
+            <th (click)="orderByName()">Benutzername</th>
+            <th class="hidden-xs-down" (click)="orderByLastname()">Name</th>
+            <th class="hidden-sm-down" (click)="orderByFirstname()">Vorname</th>
             <th></th>
           </tr>
         </thead>
@@ -33,6 +33,6 @@
         Es wurden keine Benutzer gefunden!
       </div>
     </div>
-    <button class="btn btn-primary" (click)="createUser()">Benutzer hinzufügen</button>
+    <button [disabled]="!hasConnectionToServer" class="btn btn-primary" (click)="createUser()">Benutzer hinzufügen</button>
   </div>
 </div>

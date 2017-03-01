@@ -62,9 +62,9 @@ export const appRoutes: Routes = [
   },
   {
     path: '**', 
-    component: PageNotFoundComponent,
+    redirectTo: 'notfound',
     data: {
-      title: 'Page Not Found',
+      title: 'Error',
       relevantForNav: false
     }
   }

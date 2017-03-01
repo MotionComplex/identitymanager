@@ -59,6 +59,12 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   }));
 
+  it('should load the navigation', async(() => {
+    const fixture = TestBed.createComponent(NavigationStubComponent);
+    const nav = fixture.debugElement.componentInstance;
+    expect(nav).toBeTruthy();
+  }));
+
   it('should get Web Config', async(() => {
     const webconfigMock = {
       "stsUrl": "test",

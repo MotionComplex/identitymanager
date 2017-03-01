@@ -1,10 +1,12 @@
 // angular imports
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 
-// 3rd-party library imports
+// 3rd-party imports
 import { UUID } from 'angular2-uuid';
-import { NgbModal, NgbModalRef, NgbDatepicker, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+// import { NgbModal, NgbModalRef, NgbDatepicker, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { Overlay, DialogRef } from 'angular2-modal';
+import { Modal, OneButtonPreset } from 'angular2-modal/plugins/bootstrap';
 
 // custom services
 import { UserService } from '../../../services/users/user.service';
@@ -31,48 +33,40 @@ export class UserDetailComponent implements OnInit {
   private mandators: Mandator[];
   private assignedMandator: Mandator;
   private viewHasChanges: boolean;
-  private saveChangesModalRef: NgbModalRef;
-  private errorModalRef: NgbModalRef;
-  public dt: NgbDateStruct;
+  private currentDialog: DialogRef<OneButtonPreset>;
 
   constructor(private router: Router, 
               private route: ActivatedRoute, 
               private userService: UserService,
-              private saveChangesModal: NgbModal,
-              private errorModal: NgbModal,
-              private guidValidatorService: GuidValidatorService) { }
+              private guidValidatorService: GuidValidatorService,
+              private modal: Modal,
+              overlay: Overlay, 
+              vcRef: ViewContainerRef) {
+                overlay.defaultViewContainer = vcRef;
+              }
 
   // loads the data of the selected user creates a new user if it's an empty guid
   private loadUserAccountData() {    
     this.currentUid = this.route.snapshot.params['uid'];
 
-    // validator checks if the uid in the url is valid
-    let isValidGuid = this.guidValidatorService.isGuidParamValid(this.currentUid);
+    if(this.currentUid !== this.emptyGuid) {
+      this.userService.getUserAccount(this.currentUid)
+        .subscribe(data => {
+          console.log(data);
+          this.userAccount = data['User'];
+          this.assignedMandator = data['Mandator'];
+          this.assignedMandator.IsAssigned = true;
 
-    if(isValidGuid) {
-      if(this.currentUid !== this.emptyGuid) {
-        this.userService.getUserAccount(this.currentUid)
-          .subscribe(data => {
-            console.log(data);
-            this.userAccount = data['User'];
-            this.assignedMandator = data['Mandator'];
-            this.assignedMandator.IsAssigned = true;
-            
-            // this.convertLoadedDates();
-
-            if(this.assignedMandator) {
-              this.setAssignedMandator(this.assignedMandator);
-            }
-          }, (error: any) => {
-            console.log(error);
-          });
-      } else {
-        this.isNewAccount = true;
-        this.createNewUserAccount();
-      }
+          if(this.assignedMandator) {
+            this.setAssignedMandator(this.assignedMandator);
+          }
+        }, (error: any) => {
+          console.log(error);
+          this.router.navigate(['/notfound']);
+        });
     } else {
-      console.log("invalid guid: " + this.currentUid);
-      this.router.navigate(['/notfound']);
+      this.isNewAccount = true;
+      this.createNewUserAccount();
     }
   }
 
@@ -80,8 +74,6 @@ export class UserDetailComponent implements OnInit {
   private createNewUserAccount() {
     console.log('Creating new UserAccount');
     this.currentUid = UUID.UUID();
-    // let currentDate = validFrom['year'] + '-' + validFrom['month'] + '-' + validFrom['day'] + 'T00:00:00';
-    // this.userAccount = new UserAccount(this.currentUid, '', '', '', '', '', new Date(Date.now()), null);
     this.userAccount = new UserAccount(this.currentUid, '', '', '', '', '','', null);
   }
 
@@ -92,6 +84,7 @@ export class UserDetailComponent implements OnInit {
         this.mandators = data;
         console.log(this.mandators)
       }, (error: any) => {
+        this.openMandatorLoadingErrorModal()
         console.log(error);
       });
   }
@@ -118,18 +111,14 @@ export class UserDetailComponent implements OnInit {
   // saves the changed user account data via UserService's addOrUpdateUser-method 
   private save() {
     console.log('save user account');
-    // this.convertDates();
     this.userService.addOrUpdateUser(this.assignedMandator.UID, this.userAccount)
       .subscribe(data => {
         console.log(data);
 
-        // checks if http-get service state is ok
-        if(data['ok']) {
-          this.viewHasChanges = false;
-          this.goBack();
-        }
+        this.viewHasChanges = false;
+        this.goBack();
       }, error => {
-        // this.openErrorModal(errorContent);
+        this.openSaveErrorModal()
         console.log(error);
       });
   }
@@ -137,7 +126,7 @@ export class UserDetailComponent implements OnInit {
   // cancles the current changes and goes back to the users overview
   private cancle(content) {
     if(this.viewHasChanges && !this.isNewAccount) {
-      this.openSaveChangesModal(content);
+      this.openSaveChangesModal();
     } else {
       this.goBack();
     }
@@ -166,99 +155,80 @@ export class UserDetailComponent implements OnInit {
     this.viewChanged();
   }
 
-  // opens a modal if an error occurres while trying to save or upate the user account
-  private openErrorModal(content) {
-    this.errorModalRef = this.errorModal.open(content);
+  // opens a modal which tells the user that there are still changes on the view and asks him to save them
+  private openSaveChangesModal() {
+    this.modal.alert()
+      .title('Änderungen speichern')
+      .body(`
+        <div class="alert alert-warning" role="alert">
+          <p>Die geänderten Daten gehen verloren, wenn Sie diese jetzt nicht spcichern!</p>
+        </div>
+        <div class="alert" role="alert">
+          <p>Möchten Sie Ihre Änderungen speichern?</p>
+        </div>
+      `)
+      .isBlocking(false)
+      .addButton('btn btn-primary', 'Ja', () => {
+        this.currentDialog.destroy();
+        this.save();
+      })
+      .addButton('btn btn-primary', 'Nein', () => {
+        this.currentDialog.destroy();
+        this.goBack();
+      })
+      .okBtnClass('hideOkBtn')
+      .open()
+      .then(dialog => this.currentDialog = dialog);
   }
 
-  // opens a modal and asks if the changes should be saved if the user wants to cancle the editing process
-  private openSaveChangesModal(content) {
-    this.saveChangesModalRef = this.saveChangesModal.open(content);
+  // opens a modal if an error occurres while trying to save or upate the user account
+  private openSaveErrorModal() {
+    this.modal.alert()
+      .title('Fehler beim Speichern')
+      .body(`      
+        <div class="alert alert-warning" role="alert">
+          Beim Versuch Ihre Änderungen zu speichern, ist ein Fehler aufgetreten.
+          <p>Möglicherweise besteht keine Verbindung zum Server.</p>
+        </div>     
+        <div class="alert" role="alert">
+          Bitte versuchen sie es später nochmals!
+        </div>
+      `)
+      .isBlocking(false)
+      .open();
+  }
+  
+  // opens a modal if an error occurres while trying to save or upate the user account
+  private openMandatorLoadingErrorModal() {
+    this.modal.alert()
+      .title('Fehler beim Abrufen der Mandanten')
+      .body(`      
+        <div class="alert alert-warning" role="alert">
+          Beim Versuch die Mandanten abzurufen ist ein Fehler aufgetreten.
+          <p>Möglicherweise besteht keine Verbindung zum Server.</p>
+        </div>     
+        <div class="alert" role="alert">
+          Bitte versuchen sie es später nochmals!
+        </div>
+      `)
+      .isBlocking(false)
+      .open();
   }
 
   // saves the changes, closes the opened modal and navigates back to the users overview
   private saveChanges() {
     this.save();
-    this.saveChangesModalRef.close();
     this.goBack();
   }
 
   // discards the changes, closes the opened modal and navigates back to the users overview
   private discardChanges() {
-    this.saveChangesModalRef.close();
     this.goBack();
   }
 
   // navigates back to the users overview
   private goBack() {
     this.router.navigate(['/users']);
-  }
-
-  private convertDates() {
-    let validFrom = this.userAccount.ValidFrom;
-    let validTo = this.userAccount.ValidTo;
-    let validFromString: string;
-    let validToString: string;
-
-
-    if(validFrom !== undefined && validFrom !== null) {
-      validFromString = validFrom['year'] + '-' + validFrom['month'] + '-' + validFrom['day'];
-    }
-    
-    if(validTo !== undefined && validTo !== null) {
-      validToString = validTo['year'] + '-' + validTo['month'] + '-' + validTo['day'];
-    }
-    
-    if(validFromString !== undefined){
-      this.userAccount.ValidFrom = validFromString;
-    } 
-    
-    if(validToString !== undefined){
-      this.userAccount.ValidTo = validToString;
-    } 
-  }
-
-  private convertLoadedDates() {
-    let validFrom = this.userAccount.ValidFrom;
-    let validTo = this.userAccount.ValidTo;
-    let validFromString: any;
-    let validToString: any;
-
-    if(validFrom !== null) {
-      let dateArray = validFrom.split('-', 3);
-      validFromString = {
-        "day": dateArray[2].replace('T00:00:00', ''),
-        "month": dateArray[1],
-        "year": dateArray[0]
-      }
-
-      this.userAccount.ValidFrom = validFrom;
-    }
-      console.log('validFromString')
-      console.log(validFromString)
-
-    if(validTo !== null) {
-      let dateArray = validTo.split('-', 3);
-      validToString = {
-        "day": dateArray[2].replace('T00:00:00', ''),
-        "month": dateArray[1],
-        "year": dateArray[0]
-      }
-
-      this.userAccount.ValidTo = validTo;
-    }
-    
-    // if(validTo !== null) {
-    //   validToString = validTo['year'] + '-' + validTo['month'] + '-' + validTo['day'];
-    // }
-    
-    // if(validFromString !== undefined){
-    //   this.userAccount.ValidFrom = validFromString;
-    // } 
-    
-    // if(validToString !== undefined){
-    //   this.userAccount.ValidTo = validToString;
-    // } 
   }
 
   ngOnInit() {

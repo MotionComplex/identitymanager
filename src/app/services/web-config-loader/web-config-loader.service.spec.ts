@@ -14,7 +14,7 @@ describe('WebConfigLoaderService', () => {
     });
   });
 
-  it('should ...', inject([WebConfigLoaderService], (service: WebConfigLoaderService) => {
+  it('should inject the service', inject([WebConfigLoaderService], (service: WebConfigLoaderService) => {
     expect(service).toBeTruthy();
   }));
 });
