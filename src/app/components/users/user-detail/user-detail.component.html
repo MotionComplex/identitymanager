@@ -1,15 +1,3 @@
-<!--<template #content>
-  <div class="modal-header">
-    <h4 class="modal-title"></h4>
-  </div>
-  <div class="modal-body">
-    <p>Möchten Ihre Änderungen vorher speichern?</p>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-primary" (click)="saveChanges()">Ja</button>
-    <button type="button" class="btn btn-secondary" (click)="discardChanges()">Nein</button>
-  </div>
-</template>-->
 <div class="main-content">
   <div *ngIf="userAccount" class="container-fluid useraccount-infos">
     <h4>{{pageTitle}}</h4>
@@ -25,7 +13,7 @@
     <div *ngIf="name.errors && (name.dirty || name.touched)"
          class="alert alert-danger">
         <div [hidden]="!name.errors.required">
-            Username is required
+            Dies ist ein Pflichtfeld und muss einen Wert enthalten!
         </div>
     </div>
     <div class="input-group">
@@ -55,7 +43,7 @@
     <div *ngIf="identifier.errors && (identifier.dirty || identifier.touched)"
          class="alert alert-danger">
         <div [hidden]="!identifier.errors.required">
-            Identifier is required
+            Dies ist ein Pflichtfeld und muss einen Wert enthalten!
         </div>
     </div>
     <div class="input-group">
@@ -66,39 +54,50 @@
              (ngModelChange)="viewChanged()">
     </div>
     <div class="input-group">
+      <span class="input-group-addon input-group-addon-user">Mobile</span>
+      <input type="text"
+             class="form-control"
+             [(ngModel)]="userAccount.Mobile"
+             (ngModelChange)="viewChanged()">
+    </div>
+    <div class="input-group">
       <span class="input-group-addon input-group-addon-user">*Gültig ab</span>
-      <input class="form-control" placeholder="yyyy-mm-dd"
-             [(ngModel)]="userAccount.ValidFrom"
-             (ngModelChange)="validFromChanged(userAccount.ValidFrom)"
-             #validFrom="ngbDatepicker"
-             ngbDatepicker
+      <input class="form-control form-control-date" placeholder="yyyy-mm-dd"
              name="dp"
+             [(ngModel)]="validFromObj"
+             ngbDatepicker
+             #validfrom="ngbDatepicker"
+             (ngModelChange)="dateChanged()"
              disabled>
-      <div class="input-group-addon" (click)="validFrom.toggle()">
+      <div class="input-group-addon" (click)="validfrom.toggle()">
         <img src="assets/img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/>
       </div>
     </div>
-    {{ userAccount.ValidFrom }}
-    <div *ngIf="validFrom.errors && (validFrom.dirty || validFrom.touched)"
+    <div *ngIf="(validfrom.errors && (validfrom.dirty || validfrom.touched)) || validfrom > validTo"
          class="alert alert-danger">
-        <div [hidden]="!validFrom.errors.required">
-            This date is required
+        <div [hidden]="!validfrom.errors.required">
+            Dies ist ein Pflichtfeld und muss einen Wert enthalten!
         </div>
+    </div>
+    <div *ngIf="validTo !== null && validTo !== undefined && validFrom.getTime() > validTo.getTime()" class="alert alert-danger">
+        Das Startdatum muss kleiner sein als das Enddatum!
     </div>
     <div class="input-group">
       <span class="input-group-addon input-group-addon-user">Gültig bis</span>
-      <input class="form-control" placeholder="yyyy-mm-dd"
-             [(ngModel)]="userAccount.ValidTo"
-             (ngModelChange)="validToChanged(userAccount.ValidTo)"
-             #validTo="ngbDatepicker"
+      <input class="form-control form-control-date" placeholder="yyyy-mm-dd"
+             [(ngModel)]="validToObj"
+             (ngModelChange)="dateChanged()"
+             #validto="ngbDatepicker"
              ngbDatepicker
              name="dpt"
              disabled>
-      <div class="input-group-addon" (click)="validTo.toggle()">
+      <div class="input-group-addon" (click)="validto.toggle()">
         <img src="assets/img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/>
       </div>
     </div>
-    {{ userAccount.ValidTo }}
+    <div *ngIf="validTo !== null && validTo !== undefined && validFrom.getTime() > validTo.getTime()" class="alert alert-danger">
+        Das Enddatum muss grösser sein als das Startdatum!
+    </div>
     <hr>
     <h5>Mandanten</h5>
     <table class="table">
@@ -106,7 +105,7 @@
         <tr>
           <th>Titel</th>
           <th>Name</th>
-          <th>zuweisen</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -122,11 +121,14 @@
         </tr>
       </tbody>
     </table>
+    <div *ngIf="!assignedMandator" class="alert alert-danger">
+        Es muss ein Mandant zugewiesen werden!
+    </div>
     <hr>
     <div class="button-container">
       <div class="btn-group" role="group" aria-label="...">
-        <button type="button" class="btn btn-default" (click)="save(errorContent)" [disabled]="!viewHasChanges || !assignedMandator || !name.value || !identifier.value">Speichern</button>
-        <button type="button" class="btn btn-primary" (click)="cancle(content)">Abbrechen</button>
+        <button type="button" class="btn btn-default" (click)="save()" [disabled]="!viewHasChanges || !assignedMandator || !name.value || !identifier.value || (validTo !== null && validTo !== undefined && validFrom.getTime() > validTo.getTime())">Speichern</button>
+        <button type="button" class="btn btn-primary" (click)="cancle()">Abbrechen</button>
       </div>
     </div>
   </div>

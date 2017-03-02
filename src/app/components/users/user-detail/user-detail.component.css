@@ -13,3 +13,11 @@
 .button-container {
     margin-top: 5px;
 }
+
+.datepicker input {
+    height: 38px !important;
+}
+
+.form-control-date {
+    max-width: 250px;
+}

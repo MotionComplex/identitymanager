@@ -26,6 +26,7 @@ export class UsersComponent implements OnInit {
   private filteredUsers: User[];
   private searchString: string;
   private hasConnectionToServer: boolean;
+  private orderSymbolClass: string;
 
   constructor(private router: Router, 
               private userService: UserService,
@@ -45,12 +46,22 @@ export class UsersComponent implements OnInit {
 
   // orders the users by the username
   private orderByName() {
+
     this.filteredUsers = this.filteredUsers.sort((a, b) => {
-      let nameA = a.Name
+      let nameA = a.Name;
       let nameB = b.Name;
 
-      if (nameA < nameB) return -1;
-      if (nameA > nameB) return 1;
+      if (nameA < nameB) {
+        this.orderSymbolClass = 'glyphicon glyphicon-chevron-down';
+        return -1;
+      }
+
+      if (nameA > nameB) {
+        this.orderSymbolClass = 'glyphicon glyphicon-chevron-up';
+        return 1;
+      }
+      
+      this.orderSymbolClass = '';
       return 0;
     })
   }

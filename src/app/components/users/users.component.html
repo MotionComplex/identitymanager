@@ -10,7 +10,10 @@
       <table class="table">
         <thead>
           <tr>
-            <th (click)="orderByName()">Benutzername</th>
+            <th (click)="orderByName()">
+              <span>Benutzername</span>
+              <span class="{{orderSymbolClass}}"></span>
+            </th>
             <th class="hidden-xs-down" (click)="orderByLastname()">Name</th>
             <th class="hidden-sm-down" (click)="orderByFirstname()">Vorname</th>
             <th></th>

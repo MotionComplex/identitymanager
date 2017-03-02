@@ -4,7 +4,6 @@ import { ActivatedRoute, Router, Params } from '@angular/router';
 
 // 3rd-party imports
 import { UUID } from 'angular2-uuid';
-// import { NgbModal, NgbModalRef, NgbDatepicker, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { Overlay, DialogRef } from 'angular2-modal';
 import { Modal, OneButtonPreset } from 'angular2-modal/plugins/bootstrap';
 
@@ -34,6 +33,10 @@ export class UserDetailComponent implements OnInit {
   private assignedMandator: Mandator;
   private viewHasChanges: boolean;
   private currentDialog: DialogRef<OneButtonPreset>;
+  private validFrom: Date = new Date();
+  private validTo: Date;
+  private validFromObj: Object;
+  private validToObj: Object;
 
   constructor(private router: Router, 
               private route: ActivatedRoute, 
@@ -46,7 +49,7 @@ export class UserDetailComponent implements OnInit {
               }
 
   // loads the data of the selected user creates a new user if it's an empty guid
-  private loadUserAccountData() {    
+  private loadUserAccountData() { 
     this.currentUid = this.route.snapshot.params['uid'];
 
     if(this.currentUid !== this.emptyGuid) {
@@ -56,7 +59,12 @@ export class UserDetailComponent implements OnInit {
           this.userAccount = data['User'];
           this.assignedMandator = data['Mandator'];
           this.assignedMandator.IsAssigned = true;
-
+          console.log('this.userAccount.ValidTo')
+          console.log(this.userAccount.ValidTo)
+          console.log('this.userAccount.ValidTo as new Date')
+          console.log(new Date(this.userAccount.ValidTo))
+          this.convertDatesForDatepicker(this.userAccount.ValidFrom, this.userAccount.ValidTo);
+          
           if(this.assignedMandator) {
             this.setAssignedMandator(this.assignedMandator);
           }
@@ -74,7 +82,8 @@ export class UserDetailComponent implements OnInit {
   private createNewUserAccount() {
     console.log('Creating new UserAccount');
     this.currentUid = UUID.UUID();
-    this.userAccount = new UserAccount(this.currentUid, '', '', '', '', '','', null);
+    this.convertDatesForDatepicker(null, null);
+    this.userAccount = new UserAccount(this.currentUid, '', '', '', '', '', '', '', '');
   }
 
   // loads all mandators
@@ -111,6 +120,7 @@ export class UserDetailComponent implements OnInit {
   // saves the changed user account data via UserService's addOrUpdateUser-method 
   private save() {
     console.log('save user account');
+    this.convertDatesForSaving();
     this.userService.addOrUpdateUser(this.assignedMandator.UID, this.userAccount)
       .subscribe(data => {
         console.log(data);
@@ -123,9 +133,75 @@ export class UserDetailComponent implements OnInit {
       });
   }
 
+  // converts dates from type Date to type Object for the ngb-datepicker
+  private convertDatesForDatepicker(fromDate: string, toDate: string) {
+    if(fromDate === null) {
+      fromDate = new Date().toDateString();
+    }
+
+    this.validFrom = new Date(fromDate);
+
+    // valid from
+    let fromYear = this.validFrom.getFullYear();
+    let fromMonth = this.validFrom.getMonth() + 1;
+    let fromDay = this.validFrom.getDate();
+    let from = fromYear + '-' + fromMonth + '-' + fromDay ;
+    this.validFromObj = {
+      year: fromYear,
+      month: fromMonth,
+      day: fromDay
+    }
+
+    // valid to
+    if(toDate !== null && toDate !== undefined) {
+      this.validTo = new Date(toDate);
+      let toYear = this.validTo.getFullYear();
+      let toMonth = this.validTo.getMonth() + 1;
+      let toDay = this.validTo.getDate();
+      this.validToObj = {
+        year: toYear,
+        month: toMonth,
+        day: toDay
+      }
+    }
+  }
+
+  // converts objects to formats Date and String so date can be saved to server
+  private convertDatesForSaving() {
+    console.log('convertDatesToString: Converts the dates from validFromObj and validToObj to date and string format')
+
+    // create string for ValidFrom
+    let fromYear = this.validFromObj['year'];
+    let fromMonth =this.validFromObj['month'];
+    let fromDay = this.validFromObj['day'];
+    let from = fromYear + '-' + fromMonth + '-' + fromDay ;
+
+
+    console.log('validToObj')
+    console.log(this.validToObj)
+    if(this.validToObj !== undefined && this.validToObj !== null) {
+      // create string for user account's ValidTo
+      let toYear = this.validToObj['year'];
+      let toMonth = this.validToObj['month'];
+      let toDay = this.validToObj['day'];
+      let to = toYear + '-' + toMonth + '-' + toDay ;
+
+      // set user account's datestrings
+      this.userAccount.ValidTo = to;
+      
+      // converts datestrings to Date for the inputs date comparison/validation
+      this.validTo = new Date(to);
+    }
+    // set user account's datestrings
+    this.userAccount.ValidFrom = from;
+
+    // converts datestrings to Date for the inputs date comparison/validation
+    this.validFrom = new Date(from);
+  }
+
   // cancles the current changes and goes back to the users overview
-  private cancle(content) {
-    if(this.viewHasChanges && !this.isNewAccount) {
+  private cancle() {
+    if(this.viewHasChanges) {
       this.openSaveChangesModal();
     } else {
       this.goBack();
@@ -137,21 +213,8 @@ export class UserDetailComponent implements OnInit {
     this.viewHasChanges = true;
   }
   
-  private validFromChanged(date) {
-    let dateString = date['year'] + '-' + date['month'] + '-' + date['day'];
-    console.log('dateString')
-    console.log(dateString)
-
-    this.userAccount.ValidFrom = dateString;
-    this.viewChanged();
-  }
-
-  private validToChanged(date) {
-    let dateString = date['year'] + '-' + date['month'] + '-' + date['day'];
-    console.log('dateString')
-    console.log(dateString)
-
-    this.userAccount.ValidTo = dateString;
+  private dateChanged(date) {
+    this.convertDatesForSaving();
     this.viewChanged();
   }
 
@@ -161,20 +224,19 @@ export class UserDetailComponent implements OnInit {
       .title('Änderungen speichern')
       .body(`
         <div class="alert alert-warning" role="alert">
-          <p>Die geänderten Daten gehen verloren, wenn Sie diese jetzt nicht spcichern!</p>
+          <p>Die geänderten Daten gehen verloren, wenn Sie abbrechen!</p>
         </div>
         <div class="alert" role="alert">
-          <p>Möchten Sie Ihre Änderungen speichern?</p>
+          <p>Möchten Sie wirklich abbrechen?</p>
         </div>
       `)
       .isBlocking(false)
       .addButton('btn btn-primary', 'Ja', () => {
         this.currentDialog.destroy();
-        this.save();
+        this.goBack();
       })
       .addButton('btn btn-primary', 'Nein', () => {
         this.currentDialog.destroy();
-        this.goBack();
       })
       .okBtnClass('hideOkBtn')
       .open()
@@ -197,7 +259,7 @@ export class UserDetailComponent implements OnInit {
       .isBlocking(false)
       .open();
   }
-  
+
   // opens a modal if an error occurres while trying to save or upate the user account
   private openMandatorLoadingErrorModal() {
     this.modal.alert()

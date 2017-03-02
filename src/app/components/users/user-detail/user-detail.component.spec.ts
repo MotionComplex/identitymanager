@@ -29,7 +29,7 @@ import { UserDetailComponent } from './user-detail.component';
 describe('UserDetailComponent', () => {
   let component: UserDetailComponent;
   let fixture: ComponentFixture<UserDetailComponent>;
-  let userAccount: UserAccount = new UserAccount('000','ua','User','Account','identifier','ua@ua.com','2017-01-01','2017-12-12');
+  let userAccount: UserAccount = new UserAccount('000','ua','User','Account','identifier','ua@ua.com', '041 925 13 13','2017-01-01','2017-12-12');
   let mandators: Mandator[] = [ new Mandator('000', 'mandator', 'Mandator', false), new Mandator('111', 'mandator1', 'Mandator1', false) ]
   let webConfig: WebConfig = new WebConfig('localhost:9999', 'localhost:4200', true, 'clientid', 'scope');
   let userServiceStub = {
