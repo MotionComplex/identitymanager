@@ -19,7 +19,6 @@ import { OAuthService } from 'angular2-oauth2/oauth-service';
 // Custom services
 import { WebConfigLoaderService } from './services/web-config-loader/web-config-loader.service';
 import { AuthGuardService } from './services/auth-guard/auth-guard.service';
-import { GuidValidatorService } from './services/guid-validator/guid-validator.service';
 
 // Custom components
 import { AppComponent } from './app.component';
@@ -52,8 +51,7 @@ import { UserDetailComponent } from './components/users/user-detail/user-detail.
   providers: [
     OAuthService,
     WebConfigLoaderService,
-    AuthGuardService,
-    GuidValidatorService
+    AuthGuardService
   ],
   bootstrap: [AppComponent]
 })

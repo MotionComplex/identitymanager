@@ -18,9 +18,9 @@ export class HomeComponent {
   private unauthorizedTitle: string;
   private routes = appRoutes.filter(r => r.data['relevantForNav']);
 
-  constructor(private oauthService: OAuthService) { 
-    this.authorizedTitle = "Willkommen beim IdentityManager";
-    this.unauthorizedTitle = "Hier anmelden:";
+  constructor(private oauthService: OAuthService) {
+    this.authorizedTitle = 'Willkommen beim IdentityManager';
+    this.unauthorizedTitle = 'Hier anmelden:';
   }
 
   // logs in on IdentityServer via oauthService (redirects to login-url defined in the root-component)

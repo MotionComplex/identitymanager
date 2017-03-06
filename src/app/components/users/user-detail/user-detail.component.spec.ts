@@ -16,7 +16,6 @@ import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
 // custom services
 import { UserService } from '../../../services/users/user.service';
 import { WebConfigLoaderService } from '../../../services/web-config-loader/web-config-loader.service';
-import { GuidValidatorService } from '../../../services/guid-validator/guid-validator.service';
 
 // custom models
 import { UserAccount } from '../../../models/users/user-account';
@@ -29,15 +28,18 @@ import { UserDetailComponent } from './user-detail.component';
 describe('UserDetailComponent', () => {
   let component: UserDetailComponent;
   let fixture: ComponentFixture<UserDetailComponent>;
-  let userAccount: UserAccount = new UserAccount('000','ua','User','Account','identifier','ua@ua.com', '041 925 13 13','2017-01-01','2017-12-12');
-  let mandators: Mandator[] = [ new Mandator('000', 'mandator', 'Mandator', false), new Mandator('111', 'mandator1', 'Mandator1', false) ]
-  let webConfig: WebConfig = new WebConfig('localhost:9999', 'localhost:4200', true, 'clientid', 'scope');
-  let userServiceStub = {
+  const webConfig: WebConfig = new WebConfig('localhost:9999', 'localhost:4200', true, 'clientid', 'scope');
+  const userAccount: UserAccount = new UserAccount('000', 'ua', 'User', 'Account', 'identifier', 'ua@ua.com', '077 643 55 22', '2017-01-01', '2017-12-12');
+  const mandators: Mandator[] = [ 
+    new Mandator('000', 'mandator', 'Mandator', false), 
+    new Mandator('111', 'mandator1', 'Mandator1', false)
+  ];
+  const userServiceStub = {
     getUserAccount: () => { return userAccount; },
     addOrUpdateUser: () => { },
     getMandators: () => { return mandators; }
   };
-  let webConfigLoaderServiceStub = {
+  const webConfigLoaderServiceStub = {
     getWebConifg: () => { 
       return webConfig;
     }
@@ -56,8 +58,7 @@ describe('UserDetailComponent', () => {
       ],
       providers: [
         { provide: UserService, useValue: userServiceStub },
-        { provide: WebConfigLoaderService, useValue: webConfigLoaderServiceStub },
-        GuidValidatorService
+        { provide: WebConfigLoaderService, useValue: webConfigLoaderServiceStub }
       ]
     })
     .compileComponents();

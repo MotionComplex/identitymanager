@@ -24,14 +24,14 @@ import { UsersComponent } from './users.component';
 describe('UsersComponent', () => {
   let component: UsersComponent;
   let fixture: ComponentFixture<UsersComponent>;
-  let userAccounts: UserAccount[] = [
-    new UserAccount('000','ua','User','Account','identifier','ua@ua.com','2017-01-01','2017-12-12')
+  const webConfig: WebConfig = new WebConfig('localhost:9999', 'localhost:4200', true, 'clientid', 'scope');
+  const userAccounts: UserAccount[] = [
+    new UserAccount('000', 'ua', 'User', 'Account', 'identifier', 'ua@ua.com', '077 644 66 66', '2017-01-01', '2017-12-12')
   ];
-  let webConfig: WebConfig = new WebConfig('localhost:9999', 'localhost:4200', true, 'clientid', 'scope')
-  let userServiceStub = {
-    getUsers: () => { return userAccounts }
+  const userServiceStub = {
+    getUsers: () => { return userAccounts; }
   };
-  let webConfigLoaderServiceStub = {
+  const webConfigLoaderServiceStub = {
     getWebConifg: () => { 
       return webConfig;
     }
@@ -71,13 +71,13 @@ describe('UsersComponent', () => {
 
   it('should find user accounts via search function', () => {
     const searchString = 'ua1';
-    let users: UserAccount[] = [
-      new UserAccount('000','ua','User','Account','identifier','ua@ua.com','2017-01-01','2017-12-12'),
-      new UserAccount('111','ua1','User1','Account','identifier1','ua@ua.com','2017-01-01','2017-12-12'),
-      new UserAccount('222','ua2','User2','Account','identifier2','ua@ua.com','2017-01-01','2017-12-12')
+    const users: UserAccount[] = [
+      new UserAccount('000', 'ua', 'User', 'Account', 'identifier', 'ua@ua.com', '2017-01-01', '2017-12-12'),
+      new UserAccount('111', 'ua1', 'User1', 'Account', 'identifier1', 'ua@ua.com', '2017-01-01', '2017-12-12'),
+      new UserAccount('222', 'ua2', 'User2', 'Account', 'identifier2', 'ua@ua.com', '2017-01-01', '2017-12-12')
     ];
-    let expectedUsers: UserAccount[] = [
-      new UserAccount('111','ua1','User1','Account','identifier1','ua@ua.com','2017-01-01','2017-12-12')
+    const expectedUsers: UserAccount[] = [
+      new UserAccount('111', 'ua1', 'User1', 'Account', 'identifier1', 'ua@ua.com', '2017-01-01', '2017-12-12')
     ];
 
     component['users'] = users;
@@ -89,5 +89,5 @@ describe('UsersComponent', () => {
     component['searchUsers']();
 
     expect(component['filteredUsers']).toEqual(expectedUsers);
-  })
+  });
 });

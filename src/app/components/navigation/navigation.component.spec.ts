@@ -2,7 +2,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-import { Routes } from '@angular/router'
+import { Routes } from '@angular/router';
 
 import { NavigationComponent } from './navigation.component';
 import { RouterLinkStubDirective } from '../../../testing/router-stub';
@@ -15,14 +15,14 @@ describe('NavigationComponent', () => {
   let el: HTMLElement;
 
   beforeEach(async(() => {
-    let oauthServiceStub = {
-      isLoggedIn: () => { return true },
-      hasValidAccessToken: () => { return true },
-      hasValidIdToken: () => { return true }
+    const oauthServiceStub = {
+      isLoggedIn: () => { return true; },
+      hasValidAccessToken: () => { return true; },
+      hasValidIdToken: () => { return true; }
     };
 
     TestBed.configureTestingModule({
-      declarations: [ 
+      declarations: [
         NavigationComponent,
         RouterLinkStubDirective
       ],
@@ -81,7 +81,6 @@ describe('NavigationComponent', () => {
     component['isLoggedIn'] = () => false;
 
     fixture.detectChanges();
-    
     de = fixture.debugElement.query(By.css('.btn-login'));
     el = de.nativeElement;
 

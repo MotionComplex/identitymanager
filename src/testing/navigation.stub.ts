@@ -4,7 +4,11 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-navigation',
   template: `
   <nav class="navbar navbar-toggleable-md navbar-light bg-faded navi">
-    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler navbar-toggler-right" 
+            type="button" data-toggle="collapse" 
+            data-target="#navbarSupportedContent" 
+            aria-controls="navbarSupportedContent" 
+            aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <a class="navbar-brand" routerLink="/">{{pageTitle}}</a>
@@ -13,12 +17,18 @@ import { Component, OnInit } from '@angular/core';
       <ul class="navbar-nav mr-auto">
         <li *ngFor="let route of routes"><a routerLink="{{route.path}}">{{route.data['title']}}</a></li>
       </ul>
-      <span *ngIf="!isLoggedIn()"><span (click)="login()">login</span><button class="btn btn-default auth-btn btn-login" type="button" (click)="login()"></button></span>
-      <span *ngIf="isLoggedIn()"><span (click)="login()">logout</span><button class="btn btn-default auth-btn btn-logout" type="button" (click)="logout()"></button></span>
+      <span *ngIf="!isLoggedIn()">
+        <span (click)="login()">login</span>
+        <button class="btn btn-default auth-btn btn-login" type="button" (click)="login()"></button>
+      </span>
+      <span *ngIf="isLoggedIn()">
+        <span (click)="login()">logout</span>
+        <button class="btn btn-default auth-btn btn-logout" type="button" (click)="logout()"></button>
+      </span>
     </div>
   </nav>
   `,
-  styles:[`
+  styles: [`
     .navbar a {
       color: rgba(0, 0, 0, 0.8);
     }

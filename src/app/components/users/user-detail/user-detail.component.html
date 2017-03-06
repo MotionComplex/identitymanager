@@ -6,6 +6,7 @@
       <input type="text"
              class="form-control form-control-success"
              [(ngModel)]="userAccount.Name"
+             [disabled]="!isNewAccount"
              #name="ngModel"
              (ngModelChange)="viewChanged()"
              required>

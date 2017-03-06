@@ -14,24 +14,24 @@ import { WebConfigLoaderService } from './services/web-config-loader/web-config-
 import { WebConfig } from './models/web-config/web-config';
 
 describe('AppComponent', () => {
-  let webConfig: WebConfig = {
-    "stsUrl": "test",
-    "clientUrl": "test",
-    "authentication": true,
-    "clientId": "test",
-    "scopes": "test",
+  const webConfig: WebConfig = {
+    'stsUrl': 'test',
+    'clientUrl': 'test',
+    'authentication': true,
+    'clientId': 'test',
+    'scopes': 'test',
   };
-  let webConfigLoaderServiceStub = {
+  const webConfigLoaderServiceStub = {
     getWebConifg: () => {
       return Observable.of(webConfig);
     }
   };
 
   beforeEach(() => {
-    let oauthServiceStub = {
-      isLoggedIn: () => { return true },
-      hasValidAccessToken: () => { return true },
-      hasValidIdToken: () => { return true },
+    const oauthServiceStub = {
+      isLoggedIn: () => { return true; },
+      hasValidAccessToken: () => { return true; },
+      hasValidIdToken: () => { return true; },
       setStorage: (storage: Storage) => { },
       tryLogin: () => {}
     };
@@ -67,11 +67,11 @@ describe('AppComponent', () => {
 
   it('should get Web Config', async(() => {
     const webconfigMock = {
-      "stsUrl": "test",
-      "clientUrl": "test",
-      "authentication": true,
-      "clientId": "test",
-      "scopes": "test",
+      'stsUrl': 'test',
+      'clientUrl': 'test',
+      'authentication': true,
+      'clientId': 'test',
+      'scopes': 'test',
     };
 
     webConfigLoaderServiceStub.getWebConifg().subscribe(data => {
@@ -81,5 +81,5 @@ describe('AppComponent', () => {
       expect(data.clientId).toEqual('test');
       expect(data.scopes).toEqual('test');
     });
-  }))
+  }));
 });

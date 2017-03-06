@@ -16,7 +16,7 @@ export class AuthGuardService implements CanActivate  {
               
   // decides if a route can be activated and navigates to an unauthorized page if the user is not authorized to access the requested page
   canActivate() {
-    let isAuthorized = this.oauthService.hasValidAccessToken() && this.oauthService.hasValidIdToken();
+    const isAuthorized = this.oauthService.hasValidAccessToken() && this.oauthService.hasValidIdToken();
     if (!isAuthorized) {
       this.router.navigate(['/unauthorized']);
     }

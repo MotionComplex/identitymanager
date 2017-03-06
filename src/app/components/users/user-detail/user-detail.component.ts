@@ -9,7 +9,6 @@ import { Modal, OneButtonPreset } from 'angular2-modal/plugins/bootstrap';
 
 // custom services
 import { UserService } from '../../../services/users/user.service';
-import { GuidValidatorService } from '../../../services/guid-validator/guid-validator.service';
 
 // custom models
 import { UserAccount } from '../../../models/users/user-account';
@@ -24,8 +23,8 @@ import { Mandator } from '../../../models/mandators/mandator';
   ]
 })
 export class UserDetailComponent implements OnInit {
-  private pageTitle: string = 'Benutzer Einzelansicht';
-  private emptyGuid: string = '00000000-0000-0000-0000-000000000000';
+  private pageTitle = 'Benutzer Einzelansicht';
+  private emptyGuid = '00000000-0000-0000-0000-000000000000';
   private isNewAccount: boolean;
   private currentUid: string;
   private userAccount: UserAccount;
@@ -41,7 +40,6 @@ export class UserDetailComponent implements OnInit {
   constructor(private router: Router, 
               private route: ActivatedRoute, 
               private userService: UserService,
-              private guidValidatorService: GuidValidatorService,
               private modal: Modal,
               overlay: Overlay, 
               vcRef: ViewContainerRef) {
@@ -52,20 +50,17 @@ export class UserDetailComponent implements OnInit {
   private loadUserAccountData() { 
     this.currentUid = this.route.snapshot.params['uid'];
 
-    if(this.currentUid !== this.emptyGuid) {
+    if (this.currentUid !== this.emptyGuid) {
       this.userService.getUserAccount(this.currentUid)
         .subscribe(data => {
           console.log(data);
           this.userAccount = data['User'];
           this.assignedMandator = data['Mandator'];
           this.assignedMandator.IsAssigned = true;
-          console.log('this.userAccount.ValidTo')
-          console.log(this.userAccount.ValidTo)
-          console.log('this.userAccount.ValidTo as new Date')
-          console.log(new Date(this.userAccount.ValidTo))
+
           this.convertDatesForDatepicker(this.userAccount.ValidFrom, this.userAccount.ValidTo);
           
-          if(this.assignedMandator) {
+          if (this.assignedMandator) {
             this.setAssignedMandator(this.assignedMandator);
           }
         }, (error: any) => {
@@ -91,17 +86,17 @@ export class UserDetailComponent implements OnInit {
     this.userService.getMandators()
       .subscribe(data => {
         this.mandators = data;
-        console.log(this.mandators)
+        console.log(this.mandators);
       }, (error: any) => {
-        this.openMandatorLoadingErrorModal()
         console.log(error);
+        this.openMandatorLoadingErrorModal();
       });
   }
 
   // sets the assigned mandator
   private setAssignedMandator(mand: Mandator) {
     this.mandators.find(m => m.UID === mand.UID).IsAssigned = mand.IsAssigned;
-    if(mand.IsAssigned) {
+    if (mand.IsAssigned) {
       this.assignedMandator = mand;
     } else {
       this.assignedMandator = null;
@@ -113,8 +108,8 @@ export class UserDetailComponent implements OnInit {
   // toggles the value from the currently assigned mandator and the mandator that should be newly assigned
   private toggleAssignedMandator(mandator: Mandator) {
     mandator.IsAssigned = !mandator.IsAssigned;
-    this.setAssignedMandator(mandator)
-    this.mandators.filter(m => m.UID != mandator.UID).forEach(m => m.IsAssigned = false);
+    this.setAssignedMandator(mandator);
+    this.mandators.filter(m => m.UID !== mandator.UID).forEach(m => m.IsAssigned = false);
   }
 
   // saves the changed user account data via UserService's addOrUpdateUser-method 
@@ -128,63 +123,62 @@ export class UserDetailComponent implements OnInit {
         this.viewHasChanges = false;
         this.goBack();
       }, error => {
-        this.openSaveErrorModal()
+        this.openSaveErrorModal();
         console.log(error);
       });
   }
 
   // converts dates from type Date to type Object for the ngb-datepicker
   private convertDatesForDatepicker(fromDate: string, toDate: string) {
-    if(fromDate === null) {
+    if (fromDate === null) {
       fromDate = new Date().toDateString();
     }
 
     this.validFrom = new Date(fromDate);
 
     // valid from
-    let fromYear = this.validFrom.getFullYear();
-    let fromMonth = this.validFrom.getMonth() + 1;
-    let fromDay = this.validFrom.getDate();
-    let from = fromYear + '-' + fromMonth + '-' + fromDay ;
+    const fromYear = this.validFrom.getFullYear();
+    const fromMonth = this.validFrom.getMonth() + 1;
+    const fromDay = this.validFrom.getDate();
+    const from = fromYear + '-' + fromMonth + '-' + fromDay ;
     this.validFromObj = {
       year: fromYear,
       month: fromMonth,
       day: fromDay
-    }
+    };
 
     // valid to
-    if(toDate !== null && toDate !== undefined) {
+    if (toDate !== null && toDate !== undefined) {
       this.validTo = new Date(toDate);
-      let toYear = this.validTo.getFullYear();
-      let toMonth = this.validTo.getMonth() + 1;
-      let toDay = this.validTo.getDate();
+      const toYear = this.validTo.getFullYear();
+      const toMonth = this.validTo.getMonth() + 1;
+      const toDay = this.validTo.getDate();
       this.validToObj = {
         year: toYear,
         month: toMonth,
         day: toDay
-      }
+      };
     }
   }
 
   // converts objects to formats Date and String so date can be saved to server
   private convertDatesForSaving() {
-    console.log('convertDatesToString: Converts the dates from validFromObj and validToObj to date and string format')
+    console.log('convertDatesToString: Converts the dates from validFromObj and validToObj to date and string format');
 
     // create string for ValidFrom
-    let fromYear = this.validFromObj['year'];
-    let fromMonth =this.validFromObj['month'];
-    let fromDay = this.validFromObj['day'];
-    let from = fromYear + '-' + fromMonth + '-' + fromDay ;
+    const fromYear = this.validFromObj['year'];
+    const fromMonth = this.validFromObj['month'];
+    const fromDay = this.validFromObj['day'];
+    const from = fromYear + '-' + fromMonth + '-' + fromDay ;
 
-
-    console.log('validToObj')
-    console.log(this.validToObj)
-    if(this.validToObj !== undefined && this.validToObj !== null) {
+    console.log('validToObj');
+    console.log(this.validToObj);
+    if (this.validToObj !== undefined && this.validToObj !== null) {
       // create string for user account's ValidTo
-      let toYear = this.validToObj['year'];
-      let toMonth = this.validToObj['month'];
-      let toDay = this.validToObj['day'];
-      let to = toYear + '-' + toMonth + '-' + toDay ;
+      const toYear = this.validToObj['year'];
+      const toMonth = this.validToObj['month'];
+      const toDay = this.validToObj['day'];
+      const to = toYear + '-' + toMonth + '-' + toDay ;
 
       // set user account's datestrings
       this.userAccount.ValidTo = to;
@@ -201,7 +195,7 @@ export class UserDetailComponent implements OnInit {
 
   // cancles the current changes and goes back to the users overview
   private cancle() {
-    if(this.viewHasChanges) {
+    if (this.viewHasChanges) {
       this.openSaveChangesModal();
     } else {
       this.goBack();

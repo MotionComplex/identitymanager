@@ -21,7 +21,7 @@ import { User } from '../../models/users/user';
   ]
 })
 export class UsersComponent implements OnInit {
-  private pageTitle: string = 'Benutzerübersicht';
+  private pageTitle = 'Benutzerübersicht';
   private users: User[];
   private filteredUsers: User[];
   private searchString: string;
@@ -38,18 +38,18 @@ export class UsersComponent implements OnInit {
 
   // searchs users by the searchString
   private searchUsers() {
-    this.filteredUsers = this.users.filter(u => (u.Name !== null && u.Name.toLocaleLowerCase().includes(this.searchString.toLocaleLowerCase())) ||
-                                                (u.Lastname !== null && u.Lastname.toLocaleLowerCase().includes(this.searchString.toLocaleLowerCase())) ||
-                                                (u.Firstname !== null && u.Firstname.toLocaleLowerCase().includes(this.searchString.toLocaleLowerCase())) ||
-                                                (u.EmailAddress !== null && u.EmailAddress.toLocaleLowerCase().includes(this.searchString.toLocaleLowerCase())));
+    this.filteredUsers = this.users
+      .filter(u => (u.Name !== null && u.Name.toLocaleLowerCase().includes(this.searchString.toLocaleLowerCase())) ||
+                   (u.Lastname !== null && u.Lastname.toLocaleLowerCase().includes(this.searchString.toLocaleLowerCase())) ||
+                   (u.Firstname !== null && u.Firstname.toLocaleLowerCase().includes(this.searchString.toLocaleLowerCase())) ||
+                   (u.EmailAddress !== null && u.EmailAddress.toLocaleLowerCase().includes(this.searchString.toLocaleLowerCase())));
   }
 
   // orders the users by the username
   private orderByName() {
-
     this.filteredUsers = this.filteredUsers.sort((a, b) => {
-      let nameA = a.Name;
-      let nameB = b.Name;
+      const nameA = a.Name;
+      const nameB = b.Name;
 
       if (nameA < nameB) {
         this.orderSymbolClass = 'glyphicon glyphicon-chevron-down';
@@ -61,33 +61,44 @@ export class UsersComponent implements OnInit {
         return 1;
       }
       
-      this.orderSymbolClass = '';
       return 0;
-    })
+    });
   }
   
   // orders the users by the firstname
   private orderByFirstname() {
     this.filteredUsers = this.filteredUsers.sort((a, b) => {
-      let firstnameA = a.Firstname
-      let firstnameB = b.Firstname;
+      const firstnameA = a.Firstname;
+      const firstnameB = b.Firstname;
 
-      if (firstnameA < firstnameB) return -1;
-      if (firstnameA > firstnameB) return 1;
+      if (firstnameA < firstnameB) { 
+        return -1;
+      }
+      
+      if (firstnameA > firstnameB) {
+        return 1;
+      }
+
       return 0;
-    })
+    });
   }
   
   // orders the users by their lastname
   private orderByLastname() {
     this.filteredUsers = this.filteredUsers.sort((a, b) => {
-      let lastnameA = a.Lastname;
-      let lastnameB = b.Lastname;
+      const lastnameA = a.Lastname;
+      const lastnameB = b.Lastname;
 
-      if (lastnameA < lastnameB) return -1;
-      if (lastnameA > lastnameB) return 1;
+      if (lastnameA < lastnameB) {
+        return -1;
+      }
+
+      if (lastnameA > lastnameB) {
+        return 1;
+      }
+
       return 0;
-    })
+    });
   }
 
   // loads all the users for the user overview via UserService

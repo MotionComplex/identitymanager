@@ -1,6 +1,6 @@
 // agnular imports
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes }  from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
 // components
 import { HomeComponent } from './components/home/home.component';
@@ -61,7 +61,7 @@ export const appRoutes: Routes = [
     }
   },
   {
-    path: '**', 
+    path: '**',
     redirectTo: 'notfound',
     data: {
       title: 'Error',
@@ -78,4 +78,4 @@ export const appRoutes: Routes = [
         RouterModule
     ]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

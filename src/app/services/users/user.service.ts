@@ -16,16 +16,16 @@ import { WebConfig } from '../../models/web-config/web-config';
 
 @Injectable()
 export class UserService {
-  private stsUrl: string = 'http://localhost:35854'
-  private usersApi: string = '/api/useraccount';
-  private mandatorsApi: string = '/api/mandator';
+  private stsUrl = 'http://localhost:35854';
+  private usersApi = '/api/useraccount';
+  private mandatorsApi = '/api/mandator';
   private webConfig: WebConfig;
   private headers = new Headers();
   private options = new RequestOptions();
 
   constructor(private http: Http, 
               private webConfigLoaderService: WebConfigLoaderService) {
-    this.headers.append("Authorization", "Bearer " + window.localStorage.getItem("access_token"));
+    this.headers.append('Authorization', 'Bearer ' + window.localStorage.getItem('access_token'));
     this.options.headers = this.headers;
   }
 
@@ -38,25 +38,25 @@ export class UserService {
   // gets a user account via http-get method by its uid
   public getUserAccount(uid: string): Observable<UserAccount> {
     return this.http.get(`${this.stsUrl}${this.usersApi}?uid=${uid}`, this.options)
-      .map(this.mapData)
+      .map(this.mapData);
   }
 
   // creates a new user or updates an existing user account and links it with a mandator
-  public addOrUpdateUser(mandatorUid, userAccount): Observable<Response>{
-    let body = userAccount;
-    let url = `${this.stsUrl}${this.usersApi}/${mandatorUid}`;
+  public addOrUpdateUser(mandatorUid, userAccount): Observable<Response> {
+    const body = userAccount;
+    const url = `${this.stsUrl}${this.usersApi}/${mandatorUid}`;
     return this.http.put(url, body);
   }
 
   // gets all mandators via http-get method
   public getMandators(): Observable<Mandator[]> {
     return this.http.get(`${this.stsUrl}${this.mandatorsApi}`, this.options)
-      .map(this.mapData)
+      .map(this.mapData);
   }
 
   // parses the response-data to a json and returns it
   private mapData(res: Response) {
-    let body = res.json();
+    const body = res.json();
     console.log('body');
     console.log(body);
     return body;

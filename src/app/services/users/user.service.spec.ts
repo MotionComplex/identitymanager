@@ -11,8 +11,8 @@ import { WebConfigLoaderService } from '../web-config-loader/web-config-loader.s
 import { WebConfig } from '../../models/web-config/web-config';
 
 describe('UserService', () => {
-  let webConfig: WebConfig = new WebConfig('localhost:9999', 'localhost:4200', true, 'clientid', 'scope')
-  let webConfigLoaderServiceStub = {
+  const webConfig: WebConfig = new WebConfig('localhost:9999', 'localhost:4200', true, 'clientid', 'scope');
+  const webConfigLoaderServiceStub = {
     getWebConifg: () => { 
       return webConfig;
     }

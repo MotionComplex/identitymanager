@@ -12,14 +12,14 @@ describe('HomeComponent', () => {
   let fixture: ComponentFixture<HomeComponent>;
   let de: DebugElement;
   let el: HTMLElement;
-  let oauthServiceStub = {
-    hasValidAccessToken: () => { return true },
-    hasValidIdToken: () => { return true }
+  const oauthServiceStub = {
+    hasValidAccessToken: () => { return true; },
+    hasValidIdToken: () => { return true; }
   };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ 
+      declarations: [
         HomeComponent,
         RouterLinkStubDirective
       ],
@@ -39,7 +39,7 @@ describe('HomeComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  
+
   it('should contain a login button', () => {
     component['isLoggedIn'] = () => false;
 
@@ -57,10 +57,8 @@ describe('HomeComponent', () => {
     component['isLoggedIn'] = () => true;
 
     fixture.detectChanges();
-    
     de = fixture.debugElement.query(By.css('h1'));
     el = de.nativeElement;
-  
     expect(el.innerHTML).toContain(expectedTitle);
   });
 });
