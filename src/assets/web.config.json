@@ -1,6 +1,6 @@
 {
-    "stsUrl": "http://localhost:35854",
-    "clientUrl": "http://localhost:4200",
+    "stsUrl": "http://eduapp.cloudapp.net:62092",
+    "clientUrl": "http://edu-idmgr.azurewebsites.net",
     "authentication": true,
     "clientId": "identitymanager",
     "scopes": "openid profile mandant"
