@@ -16,7 +16,6 @@ export class WebConfigLoaderService {
 
   // gets data of the web.config.json file via http-get method
   public getWebConifg(): Observable<WebConfig> {
-    return this.http.get('../../assets/web.config.json').map(res => res.json());
-    // return this.http.get('../../web.config.json').map(res => res.json());
+    return this.http.get('../../web.config.json').map(res => res.json());
   }
 }
